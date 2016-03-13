@@ -6,8 +6,8 @@ const Main = ({history, children}) => {
 
             <nav className="navbar navbar-default" role="navigation">
            
-                <div className="col-sm-7 col-sm-offset-2" style={{marginTop: 15, marginLeft: 15}}>
-                    <h1>30 day challenge <small>track your progress here</small></h1>
+                <div className="col-sm-9 col-sm-offset-2" style={{marginTop: 15, marginLeft: 15}}>
+                    <h1 className="title">30 day Push-up Pull-up Challenge <small></small></h1>
                 </div>
             </nav>
             <div className="container">
