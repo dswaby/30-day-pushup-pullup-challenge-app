@@ -2,16 +2,14 @@ import React from 'react'
 import Rebase from 're-base'
 import Count from './Count'
 
-const base = Rebase.createClass('https://30day.firebaseio.com/')
+
+const base = Rebase.createClass('https://30day.firebaseio.com/');
+const today = new Date();
 
 class Counter extends React.Component {
 	// use constructor to set state instead of getInitialState
 	constructor( props ){
 		super(props)
-		console.log(props)
-		this.state = {
-			pullUps: []
-		}
 	}
 	init( username ) {
 		this.ref = base.bindToState(this.props.username, {
@@ -19,18 +17,11 @@ class Counter extends React.Component {
 			asArray: false,
 			state: this.props.countType
 		})
+        this.setState({ docLookup: today.getMonth() + "-" + today.getDate() + "-" + today.getFullYear() });
 	}
-
-	updateCount( count ) {
-		base.post(this.props.username, {
-			data: this.state.count.concat([newCount])
-		})
-	}
-
 	componentWillMount() {
-		console.log(this.props)
+		console.log("component will mount", this.props)
 	}
- 	
 	componentDidMount() {
 		this.init(this.props.username);
 	}
@@ -41,12 +32,13 @@ class Counter extends React.Component {
 	componentWillUnmount() {
 		base.removeBinding(this.ref)
 	}
-	handleUpdateCount( newCount ) {
-		// add new note to firebase
-		base.post( this.props.username + "/" + this.props.countType, {
-			data: this.state.count.concat([newCount])
+	handleUpdateCount( newCount, countType ) {
+		const data = Object.assign(this.props.counts[countType], { docLookup: newCount });
+		base.post( this.props.username + "/" + countType, {
+			data: data
 		})
 	}
+
 	render() {
 		return (
 			<div className="row">
@@ -54,10 +46,18 @@ class Counter extends React.Component {
 		         	<Count
 		         		username={this.props.username} 
 		         		count="99"
-		         		updateCount={(newCount) => this.handleUpdateCount(newCount)}/>
+		         		updateCount={this.handleUpdateCount}
+		         		countType="push-ups"
+		         	/>
+		         	<Count
+		         		username={this.props.username}
+		         		count="99"
+		         		updateCount={this.handleUpdateCount}
+		         		countType="pull-ups"
+		         	/>
 		        </div>
-		      </div>
-		);
+		    </div>
+		)
 	}
 }
 

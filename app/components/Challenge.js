@@ -1,6 +1,6 @@
 import React from 'react'
-import verifyUser from './../utils/helpers'
-import Counter from './Counter'
+import Counters from './Counters'
+import {verifyUser} from '../utils/helpers'
 
 class Challenge extends React.Component {
     constructor(props) {
@@ -18,9 +18,8 @@ class Challenge extends React.Component {
     render() {
     	return (
     		<div className="text-center">
-    			<h2>30 Day Push-Up/Pull-Up challenge for {this.props.params.username}</h2>
-    			<Counter countType="pull-ups" username={this.props.params.username} />
-    			<Counter countType="push-ups" username={this.props.params.username} />
+    			<h2>{this.props.params.username}'s progress</h2>
+    			<Counters username={this.props.params.username} />
     		</div>
     	)
     }
