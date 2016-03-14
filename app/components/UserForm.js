@@ -40,14 +40,14 @@ class UserForm extends React.Component {
         this.password = passwordRef;
     }
     handleSubmit(){
-        var email = this.email;
-        var password = this.password;
+        var email = this.email.value;
+        var password = this.password.value;
         this.validatePassword();
         this.validateEmail();
-
-        if (this.state.invalidEmail && this.state.invalidPassword) {
-            this.props.handleUserForm( email, password )
+        if (this.state.invalidEmail || this.state.invalidPassword) {
+            return false
         }
+        this.props.handleUserForm( email, password )
     }
     render() {
         return (
@@ -58,7 +58,7 @@ class UserForm extends React.Component {
                 <br />
                 <span>{this.state.invalidPassword && <label className="text-danger">Password Minimum is 6 Characters</label>}</span>
                 <label >Password</label>
-                <input type="text" placeholder="Password" className="form-control" ref={(passwordRef) => this.getPassword(passwordRef)} />
+                <input type="password" placeholder="Password" className="form-control" ref={(passwordRef) => this.getPassword(passwordRef)} />
                 <br />
                 <button type="submit" className="btn btn-block btn-primary">{this.props.buttonText}</button>
             </div>

@@ -2,35 +2,59 @@ import React from 'react'
 import Router from 'react-router'
 import Rebase from 're-base'
 import UserForm from './UserForm'
+import { Link } from 'react-router'
 
+const base = Rebase.createClass('https://30day.firebaseio.com');
 
-// not using classes since there is no support for mixins with ES6 classes
 class Home extends React.Component {
     constructor( props ){
         super(props)
         this.state = {
-            invalid: false
+            error: false
         }
     }
-    componentWillMount(){
-        this.setState({invalid: true})
-    }
-    
     userLogin(username, password){
-        console.log(username, password)
+        base.authWithPassword({
+          email    : username,
+          password : password
+        }, function(error, authData) {
+            if ( error ) {
+                this.errorHandler(error);
+            }
+            else {
+                Router.transition("/challenge/"+authData.token);
+            }
+        }.bind(this));
     }
-    navigateRegister(){
-        this.props.history.pushState(null, "/register/")
+    errorHandler (error) {
+        switch (error.code) {
+          case "EMAIL_TAKEN":
+            this.setState({ error: "This email is already in use." });
+            break;
+          case "INVALID_EMAIL":
+            this.setState({ error: "The specified email is not a valid email." });
+            break;
+          default:
+            this.setState({ error: "Error creating user:" + error });
+            break;
+        }
+    }
+    authHandler( error, authData ) {
+        if ( error ) {
+            this.errorHandler(error);
+        }
+        else {
+            console.log(authData)
+        }
     }
     render() {
         return (
             <div className="home">
                 <div className="col-sm-12">
                     <div className="col-sm-6">
-                        {this.state.invalid && <label className="text-danger" style={{paddingLeft:10}}>Not a valid email</label>}
-                        <UserForm handleUserForm={this.userLogin} buttonText="Register"/>
-                         <p style={{paddingTop: 10}}><a href="#" onClick={this.navigateRegister}>Not a user? Sign up and start the challenge today!</a></p>
-                        }
+                        {this.state.error && <label className="text-danger" style={{paddingLeft:10}}>Not a valid email</label>}
+                        <UserForm handleUserForm={this.userLogin} buttonText="Login"/>
+                         <p style={{paddingTop: 10}}><Link to="/register">Not a user? Sign up and start the challenge today!</Link></p>
                     </div>
                     <div className="col-sm-6">
                         <h2 className="text-center">Login to continue tracking your progress</h2>
