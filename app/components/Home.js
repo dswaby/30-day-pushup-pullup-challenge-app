@@ -1,30 +1,23 @@
 import React from 'react'
-import Router from 'react-router'
+import { Link, hashHistory } from 'react-router'
 import Rebase from 're-base'
-import UserForm from './UserForm'
-import { Link } from 'react-router'
+import UserForm from './Form/UserForm'
 
 const base = Rebase.createClass('https://30day.firebaseio.com');
 
 class Home extends React.Component {
     constructor( props ){
+        console.log(props)
         super(props)
         this.state = {
             error: false
         }
     }
-    userLogin(username, password){
+    userLogin( username, password ){
         base.authWithPassword({
           email    : username,
           password : password
-        }, function(error, authData) {
-            if ( error ) {
-                this.errorHandler(error);
-            }
-            else {
-                Router.transition("/challenge/"+authData.token);
-            }
-        }.bind(this));
+        }, this.authHandler.bind(this));
     }
     errorHandler (error) {
         switch (error.code) {
@@ -40,11 +33,13 @@ class Home extends React.Component {
         }
     }
     authHandler( error, authData ) {
+        debugger
         if ( error ) {
             this.errorHandler(error);
         }
         else {
-            console.log(authData)
+            const path = "/challenge/" + authData.uid + "?token="+authData.token;
+            hashHistory.replace(path);
         }
     }
     render() {
@@ -53,7 +48,7 @@ class Home extends React.Component {
                 <div className="col-sm-12">
                     <div className="col-sm-6">
                         {this.state.error && <label className="text-danger" style={{paddingLeft:10}}>Not a valid email</label>}
-                        <UserForm handleUserForm={this.userLogin} buttonText="Login"/>
+                        <UserForm handleUserForm={this.userLogin.bind( this )} buttonText="Login"/>
                          <p style={{paddingTop: 10}}><Link to="/register">Not a user? Sign up and start the challenge today!</Link></p>
                     </div>
                     <div className="col-sm-6">

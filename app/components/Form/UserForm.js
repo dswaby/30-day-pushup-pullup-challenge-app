@@ -46,14 +46,15 @@ class UserForm extends React.Component {
         this.validateEmail();
         if (this.state.invalidEmail || this.state.invalidPassword) {
             return false
+        } else {
+            this.props.handleUserForm( email, password )
         }
-        this.props.handleUserForm( email, password )
     }
     render() {
         return (
         <form onSubmit={() => this.handleSubmit()}>
             <div className="form-group">
-                <label>Name</label>  <span>{this.state.invalidEmail && <label className="text-danger" style={{paddingLeft:10}}>Not a valid email </label>}</span>
+                <label>Email</label>  <span>{this.state.invalidEmail && <label className="text-danger" style={{paddingLeft:10}}>Not a valid email </label>}</span>
                 <input type="text" placeholder="Username" className="form-control" ref={(emailRef) => this.getEmail(emailRef)} />
                 <br />
                 <span>{this.state.invalidPassword && <label className="text-danger">Password Minimum is 6 Characters</label>}</span>
