@@ -18,8 +18,8 @@ class Register extends React.Component {
             }
         }
 
-        getName (nameRef) {
-            this.setState({ name: name.value });
+        getName(nameRef){
+            this.name = nameRef;
         }
 
         errorHandler(error) {
@@ -36,17 +36,17 @@ class Register extends React.Component {
             }
         }
         responseHandler ( error, userData ){
-            var selfie = this;
-            if (error) {
-                    this.errorHandler(error)
-                } else {
+            const selfie = this;
+            const name = this.name.value;
+            if ( error ) {
+                this.errorHandler( error )
+            } else {
                 // user creation successfull, create initial user data fields 
                 // navigate to challenge once posted
                 // const challengeData = getChallengeData();
                 const initialData = userEntries();
-                this.getName();
-                if (this.state.name) {
-                    Object.assign(initialData, {"name": this.state.name});
+                if (name) {
+                    initialData.name = name;
                 }
                 base.post(`${userData.uid}`, {
                     data: initialData,
@@ -69,10 +69,11 @@ class Register extends React.Component {
             hashHistory.replace(path);
         }
         handleSubmit(email, password) {
+            var name = this.name.value;
             base.createUser({
                 email: email,
                 password: password
-            }, this.responseHandler.bind( this ) );
+            }, this.responseHandler.bind( this ));
         }
         render() {
             return ( 
@@ -83,7 +84,7 @@ class Register extends React.Component {
                             {this.state.error && <label className = "text-danger" style={{ paddingLeft: 10 }}> {this.state.error} </label> }
                             <div className="form-group">
                                 <label>Name <span className="optional-field">**optional</span></label>
-                            <input type="text" placeholder="Username" className="form-control" nameRef={(name) => this.getName(name)} />
+                            <input type="text" placeholder="Username" className="form-control" ref={(nameRef) => this.getName( nameRef )} />
                             </div>
                             <UserForm handleUserForm={this.handleSubmit.bind( this )} buttonText="Register" className="text-center" />
                             <p style={{paddingTop: 10}}>Have an account already? <Link to="/">Log in?</Link></p>
