@@ -8,7 +8,7 @@ function today () {
 // get index of array for current date
 export function todaysIndex ( startDate ) {
     var todaysDate = today();
-    return (todaysDate - startDate.getTime())/86400000;
+    return (todaysDate - startDate)/86400000;
 }
 
 export default function userEntries() {
@@ -26,8 +26,8 @@ export default function userEntries() {
     return {
         "challengeStart": today(),
         "challengeEnd": today() + 2592000000,
-        "push-ups": zeroArray,
-        "pull-ups": zeroArray
+        "pushups": zeroArray,
+        "pullups": zeroArray
     }
 }
 
