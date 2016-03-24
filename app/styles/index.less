@@ -1,0 +1,78 @@
+@import "~bootstrap/less/variables";
+@import "~bootstrap/less/mixins";
+@import "~bootstrap/less/grid";
+@import "~bootstrap/less/scaffolding";
+@import "~bootstrap/less/type";
+@import "~bootstrap/less/grid";
+@import "~bootstrap/less/forms";
+@import "~bootstrap/less/buttons";
+// Bootstrap Utility classes
+@import "~bootstrap/less/utilities.less";
+@import "~bootstrap/less/responsive-utilities.less";
+@import "~bootstrap/less/navbar";
+// css spinner-loader
+@import "loading-spinner.less";
+@import "counter";
+@import "icomoon.less";
+@font-face {
+    font-family: 'Avenir Light';
+    src: url('http://swa.by/static/fonts/AvenirLTStd-Light.eot?#iefix') format('embedded-opentype'), url('http://swa.by/static/fonts/AvenirLTStd-Light.otf') format('opentype'), url('http://swa.by/static/fonts/AvenirLTStd-Light.woff') format('woff'), url('http://swa.by/static/fonts/AvenirLTStd-Light.ttf') format('truetype'), url('http://swa.by/static/fonts/AvenirLTStd-Light.svg#AvenirLTStd-Light') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+h1.title {
+    font-family: 'Avenir Light';
+}
+
+.register {
+    position: relative;
+}
+
+.login {
+    z-index: 100;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow-y: hidden;
+    max-height: 500px;
+    /* approximate max height */
+    transition-property: all;
+    transition-duration: 1.5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.login-under {
+    z-index: 50;
+    position: absolute;
+    top: 30px;
+    text-align: center;
+    margin: auto;
+    left: 0;
+    right: 0;
+    font-size: 22px;
+}
+
+.login.closed {
+    max-height: 0;
+}
+
+.optional-field {
+    font-weight: 800;
+    font-style: italic;
+    font-size: 12px;
+    padding-left: 12px;
+    color: #989;
+}
+
+.registration-box {
+    background-color: #e6e6e6;
+    padding: 30px;
+    border-radius: 5px;
+}
+
+.btn-dig-blue {
+    color: #ffffff;
+    background: #298eea;
+    border-color: #298eea;
+}

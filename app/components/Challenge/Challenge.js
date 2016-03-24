@@ -1,6 +1,7 @@
 import React from 'react'
 import Counter from './Counter'
 import Rebase from 're-base'
+import Loader from './Loader'
 import { hashHistory } from 'react-router'
 import { todaysIndex } from './../../utils/helpers'
 
@@ -8,12 +9,14 @@ const base = Rebase.createClass('https://30day.firebaseio.com/');
 
 class Challenge extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
-            name: "",
             index: 0,
-            counts:{
-                challengeStart:0, 
+            loading: true,
+            dateString: "",
+            counts: {
+                challengeStart: 0,
+                name: "",
                 pushups: [],
                 pullups: []
             }
@@ -21,12 +24,24 @@ class Challenge extends React.Component {
     }
 
     componentDidMount() {
+        const today = new Date();
+        this.setState({ dateString: today.toDateString() });
         const query = this.props.location.query;
         this.UID = this.props.params.uid;
         if (query.token) {
             this.AUTH_TOKEN = query.token;
         }
-        this.init( this.UID );
+        base.fetch( this.UID, {
+            context: this,
+            asArray: false,
+            then( data ){
+                var index = todaysIndex( data.challengeStart );
+                if ( data.name ) { this.setState({ name: data.name })}
+                this.setState({ index: index, loading: false });
+                this.init( this.UID );
+            }
+          });
+        
     }
 
 	init ( uid ) {
@@ -35,25 +50,24 @@ class Challenge extends React.Component {
             const path = "/" ;
             hashHistory.replace(path);
         }
-        this.ref = base.bindToState(uid, {
+        base.bindToState(uid, {
             context: this,
             asArray: false,
-            state: 'counts',
-            then() {
-                var i = todaysIndex(this.state.counts.challengeStart);
-                this.setState({ index: i });
-            }
+            state: 'counts'
         });
 	}
 
+
+
     updateCount ( newCount, counterFor ) {
+        console.log( newCount )
         const i = this.state.index;
         const key = counterFor.replace(" ","").toLowerCase();
-        const counts = this.state.counts[key].slice();
-        counts[i] = newCount;
-
+        const countsCpy = this.state.counts;
+        countsCpy[key][i] = newCount;
+        this.setState({ counts: countsCpy })
         base.post(`${this.UID}/${key}`, {
-            data: counts,
+            data: countsCpy[key],
             then(){
                 console.log("count updated, state should be bound to firebase and dom should reflect updated state")
             }
@@ -63,25 +77,23 @@ class Challenge extends React.Component {
     render() {
     	return (
     		<div className="text-center">
+                {this.state.loading && <Loader />}
                 {this.state.error && <h1> {this.state.error} </h1>}
-    			{this.state.name && <h2>{this.props.name}'s progress</h2>}
+    			{this.state.name && <h2>{this.state.name}'s progress for { this.state.dateString }</h2>}
     			<div className="row">
-                    <div className="col-md-12">
-                        <div className="col-md-3">
+                    <div className="col-sm-12">
+                        <div className="col-sm-12 col-md-6 center-block">
+                        { this.state.counts.pushups.length && <Counter
+                            count={ this.state.counts.pushups[this.state.index] }
+                            countType="Push Ups" 
+                            updateCount={this.updateCount.bind( this )} />}
                         </div>
-                            <div className="counter col-md-6">
-                                <Counter
-                                    counts={this.state.counts.pushups}
-                                    countType="Push Ups" 
-                                    index={ this.state.index } 
-                                    updateCount={this.updateCount.bind( this )} />
-                                <Counter
-                                    counts={this.state.counts.pullups}
-                                    countType="Pull Ups" 
-                                    index={ this.state.index } 
-                                    updateCount={this.updateCount.bind( this )} />
-                            </div>
-                        <div className="col-md-3">
+                        <div className="col-sm-12 col-md-6 center-block">
+
+                        { this.state.counts.pushups.length && <Counter
+                            count={ this.state.counts.pullups[this.state.index] }
+                            countType="Pull Ups" 
+                            updateCount={this.updateCount.bind( this )} /> }
                         </div>
                     </div>
                 </div>

@@ -8,7 +8,7 @@ const Main = ({history, children}) => {
                     <h1 className="title">30 day Push-up/Pull-up Challenge <small></small></h1>
                 </div>
             </nav>
-            <div className="container">
+            <div className="">
                 {children}
             </div>
         </div>

@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, hashHistory } from 'react-router'
 import routes from './config/routes'
+var css = require("!style!css!less!./styles/index.less");
 
 ReactDOM.render(
 	<Router history={hashHistory}>{routes}</Router>,
