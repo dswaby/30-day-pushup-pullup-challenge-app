@@ -12,6 +12,7 @@ class Challenge extends React.Component {
         super(props);
         this.state = {
             index: 0,
+            challengeDay: 0,
             loading: true,
             dateString: "",
             counts: {
@@ -37,7 +38,7 @@ class Challenge extends React.Component {
             then( data ){
                 var index = todaysIndex( data.challengeStart );
                 if ( data.name ) { this.setState({ name: data.name })}
-                this.setState({ index: index, loading: false });
+                this.setState({ index: index, loading: false, challengeDay: index + 1 });
                 this.init( this.UID );
             }
           });
@@ -69,7 +70,7 @@ class Challenge extends React.Component {
         base.post(`${this.UID}/${key}`, {
             data: countsCpy[key],
             then(){
-                console.log("count updated, state should be bound to firebase and dom should reflect updated state")
+                console.log("count updated")
             }
         });
     }
@@ -79,6 +80,7 @@ class Challenge extends React.Component {
     		<div className="text-center">
                 {this.state.loading && <Loader />}
                 {this.state.error && <h1> {this.state.error} </h1>}
+                {this.state.challengeDay && <h1>Day {this.state.challengeDay} of 30</h1>}
     			{this.state.name && <h2>{this.state.name}'s progress for { this.state.dateString }</h2>}
     			<div className="row">
                     <div className="col-sm-12">

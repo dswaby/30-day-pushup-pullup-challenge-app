@@ -41,6 +41,7 @@ class UserForm extends React.Component {
         this.password = passwordRef;
     }
     handleSubmit(e){
+        e.preventDefault();
         var email = this.email.value;
         var password = this.password.value;
         if (this.validate( email, password )) {

@@ -3,6 +3,7 @@ import { Link, Router, hashHistory } from 'react-router'
 import Rebase from 're-base'
 import UserForm from './UserForm'
 import userEntries from './../../utils/helpers'
+import Loader from './../Challenge/Loader'
 
 
 const base = Rebase.createClass('https://30day.firebaseio.com/');
@@ -11,34 +12,48 @@ class Register extends React.Component {
         constructor(props) {
             super(props)
             this.state = {
+                loading: false,
                 error: false,
                 uid: "",
                 name: "",
                 token: ""
             }
+            // base.onAuth( this.authDataCallback.bind(this) );
         }
 
         getName(nameRef){
             this.name = nameRef;
         }
 
+        authDataCallback(authData){
+            if (authData) {
+                this.uid = authData.uid;
+                this.token = authData.token;
+            }
+            else {
+                console.log( "user is not  logged in ")
+            }
+        }
+
         errorHandler(error) {
             switch (error.code) {
                 case "EMAIL_TAKEN":
-                    this.setState({ error: "Email address is already registered." });
+                    this.setState({ loading: false, error: "Email address is already registered." });
                     break;
                 case "INVALID_EMAIL":
-                    this.setState({ error: "The specified email is not a valid email." });
+                    this.setState({ loading: false, error: "The specified email is not a valid email." });
                     break;
                 default:
-                    this.setState({ error: "Error creating user:" + error });
+                    this.setState({ loading: false, error: "Error creating user:" + error });
                     break;
             }
         }
         responseHandler ( error, userData ){
             const selfie = this;
             const name = this.name.value;
+            const data = userData;
             if ( error ) {
+                this.setState({ loading: false })
                 this.errorHandler( error )
             } else {
                 // user creation successfull, create initial user data fields 
@@ -51,25 +66,27 @@ class Register extends React.Component {
                 base.post(`${userData.uid}`, {
                     data: initialData,
                     then() {
-                        selfie.successHandler()
+                        selfie.successHandler( data )
                     }
                 });
             }
         }
-        successHandler () {
+        successHandler ( signupData ) {
             const userAuth = base.getAuth();
             const el = document.getElementById("register");
-            this.setState({ uid: userAuth.uid, token: userAuth.token });
+            this.uid = signupData.uid;
+            // this.token = userAuth.token;
             el.className += " closed";
         }
         navigateChallenge (e) {
             e.preventDefault();
             e.stopPropagation();
-            const path = "challenge/" + this.state.uid + "?token="+ this.state.token;
+            const path = "/";
             hashHistory.replace(path);
         }
         handleSubmit(email, password) {
             var name = this.name.value;
+            this.setState({ loading: true })
             base.createUser({
                 email: email,
                 password: password
@@ -84,14 +101,15 @@ class Register extends React.Component {
                             {this.state.error && <label className = "text-danger" style={{ paddingLeft: 10 }}> {this.state.error} </label> }
                             <div className="form-group">
                                 <label>Name <span className="optional-field">**optional</span></label>
-                            <input type="text" placeholder="Username" className="form-control" ref={(nameRef) => this.getName( nameRef )} />
+                                <input type="text" placeholder="Username" className="form-control" ref={(nameRef) => this.getName( nameRef )} />
                             </div>
-                            <UserForm handleUserForm={this.handleSubmit.bind( this )} buttonText="Register" className="text-center" />
+                            {this.state.loading && !this.state.error && <Loader /> }
+                            {!this.state.loading && <UserForm handleUserForm={this.handleSubmit.bind( this )} buttonText="Register" className="text-center" />}
                             <p style={{paddingTop: 10}}>Have an account already? <Link to="/">Log in?</Link></p>
                         </div>
                         <div className="col-md-3 col-sm-3"></div>
                     </div> 
-                    <p className="login-under">Account Creation Successfull!!<br /> <a onClickCapture={this.navigateChallenge.bind( this )} href="#">Get Started</a></p>
+                    <p className="login-under">Account Creation Successfull!!<br /> <a onClickCapture={this.navigateChallenge.bind( this )} href="#">Log in and Get Started</a></p>
                 </div>
             )
         }

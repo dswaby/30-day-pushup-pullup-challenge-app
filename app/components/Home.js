@@ -13,6 +13,15 @@ class Home extends React.Component {
             errorText: ""
         }
     }
+    componentWillMount() {
+        base.onAuth( this.authCallback.bind( this ) )
+    }
+    authCallback( authData ) {
+        if ( authData && authData.auth ) {
+            const path = "/challenge/" + authData.uid + "?token="+authData.token;
+            hashHistory.replace(path);
+        }
+    }
     userLogin( username, password ){
         base.authWithPassword({
           email    : username,
@@ -36,10 +45,6 @@ class Home extends React.Component {
         if ( error ) {
             this.errorHandler(error);
         }
-        else {
-            const path = "/challenge/" + authData.uid + "?token="+authData.token;
-            hashHistory.replace(path);
-        }
     }
     render() {
         return (
@@ -48,7 +53,12 @@ class Home extends React.Component {
                     <div className="col-sm-6">
                         { this.state.errorText  && <ErrorCode errorCode={ this.state.errorText } /> }
                         <UserForm handleUserForm={this.userLogin.bind( this )} buttonText="Login"/>
-                         <p style={{paddingTop: 10}}><Link to="/register">Not a user? Sign up and start the challenge today!</Link></p>
+                         <p style={{paddingTop: 10}}>
+                            <Link to="/register">Not a user? Sign up and start the challenge today!</Link>
+                        </p>
+                        <p style={{paddingTop: 10}}>
+                            <Link to="/reset">Forgot Password!</Link>
+                        </p>
                     </div>
                     <div className="col-sm-6">
                         <h2 className="text-center">Login to continue tracking your progress</h2>
