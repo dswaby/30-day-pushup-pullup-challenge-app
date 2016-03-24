@@ -4,7 +4,7 @@ import Rebase from 're-base'
 import UserForm from './UserForm'
 import userEntries from './../../utils/helpers'
 import Loader from './../Challenge/Loader'
-
+import ExerciseSelector from './ExerciseSelector'
 
 const base = Rebase.createClass('https://30day.firebaseio.com/');
 
@@ -19,10 +19,12 @@ class Register extends React.Component {
                 token: ""
             }
             // base.onAuth( this.authDataCallback.bind(this) );
+            this.exercises = {};
         }
 
         getName(nameRef){
             this.name = nameRef;
+
         }
 
         authDataCallback(authData){
@@ -58,11 +60,15 @@ class Register extends React.Component {
             } else {
                 // user creation successfull, create initial user data fields 
                 // navigate to challenge once posted
-                // const challengeData = getChallengeData();
-                const initialData = userEntries();
+                const exercises = Object.assign( {} ,this.exercises );
+
+
+                const initialData = userEntries( exercises );
+
                 if (name) {
                     initialData.name = name;
                 }
+
                 base.post(`${userData.uid}`, {
                     data: initialData,
                     then() {
@@ -92,6 +98,18 @@ class Register extends React.Component {
                 password: password
             }, this.responseHandler.bind( this ));
         }
+        getPushups(enabled, count) {
+            this.setState({ pushups: {enabled: enabled, count: count} });
+        }
+        updateExercises(exerciseId, enabled, count) {
+            const currentExercises = Object.assign( {} ,this.exercises );
+            
+            currentExercises[exerciseId] = {
+                enabled: enabled,
+                count: count
+            }
+            this.exercises = currentExercises;
+        }
         render() {
             return ( 
                 <div className="register">
@@ -103,6 +121,8 @@ class Register extends React.Component {
                                 <label>Name <span className="optional-field">**optional</span></label>
                                 <input type="text" placeholder="Username" className="form-control" ref={(nameRef) => this.getName( nameRef )} />
                             </div>
+                            <ExerciseSelector exerciseName="Push Ups" defaultNumber="300" updateExercise={this.updateExercises.bind( this ) } />
+                            <ExerciseSelector exerciseName="Pull Ups" defaultNumber="200" updateExercise={this.updateExercises.bind( this ) } />
                             {this.state.loading && !this.state.error && <Loader /> }
                             {!this.state.loading && <UserForm handleUserForm={this.handleSubmit.bind( this )} buttonText="Register" className="text-center" />}
                             <p style={{paddingTop: 10}}>Have an account already? <Link to="/">Log in?</Link></p>
