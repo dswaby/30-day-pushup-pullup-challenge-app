@@ -11,16 +11,8 @@ class Counter extends React.Component {
         }
     }
     calculateIntensity() {
-    	var counterGoal;
+    	var counterGoal = this.props.goal;
     	var goalPercentage;
-
-    	if (this.props.countType === "Push Ups") {
-    		counterGoal = 300;
-    	}
-    	else if (this.props.countType === "Pull Ups") {
-    		counterGoal = 200;
-    	}
-
 		goalPercentage = Math.ceil((this.props.count)/counterGoal * 100);
 
 		if (goalPercentage <= 5) {
@@ -38,21 +30,30 @@ class Counter extends React.Component {
 				this.setState( { goalCompleted: true } );
 			}
 		}
+		this.setState({ diff: Math.abs(this.props.goal - this.props.count )});
     }
     componentWillMount(){
     	this.calculateIntensity()
     }
-    componentWillReceiveProps(){
+    
+    componentDidReceiveProps(){
     	this.calculateIntensity()
     }
 	render() {
 		return (
 			<div className="counter">
-				{this.state.goalCompleted && <h1 className="success">Todays {this.props.countType} Goal reached!</h1>}
+				{this.state.goalCompleted && <h1 className="success">{this.props.countType} Goal reached!</h1>}
 				{this.props.image && <img src={this.props.img} />}
-				<h2>{ this.props.count } {this.props.countType}<br /><p></p></h2>
+				<h2>{ this.props.count } of {this.props.goal} {this.props.countType}<br /><p></p></h2>
 				<Button incrementBy="5" countType={ this.props.countType } updateCount={ this.props.updateCount } count={ this.props.count }/>
-				<p className="icomoon"> <span className={this.state.intensity}></span></p>
+				<p className="icomoon"> <span className={this.state.intensity}></span>
+				<br />
+				<em> 
+				{Math.abs(this.props.diff)} 
+				{this.state.goalCompleted &&  <span> above goal, great job</span>}
+				{!this.state.goalCompleted && <span> more to go</span>}
+				</em>
+				</p>
 			</div>
 		)
 	}

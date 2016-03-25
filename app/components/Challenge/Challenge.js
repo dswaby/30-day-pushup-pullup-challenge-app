@@ -32,7 +32,7 @@ class Challenge extends React.Component {
         if (query.token) {
             this.AUTH_TOKEN = query.token;
         }
-        base.fetch( this.UID, {
+        base.fetch( `challenge/${this.UID}`, {
             context: this,
             asArray: false,
             then( data ){
@@ -51,7 +51,7 @@ class Challenge extends React.Component {
             const path = "/" ;
             hashHistory.replace(path);
         }
-        base.bindToState(uid, {
+        base.bindToState(`challenge/${uid}`, {
             context: this,
             asArray: false,
             state: 'counts'
@@ -61,16 +61,15 @@ class Challenge extends React.Component {
 
 
     updateCount ( newCount, counterFor ) {
-        console.log( newCount )
         const i = this.state.index;
         const key = counterFor.replace(" ","").toLowerCase();
         const countsCpy = this.state.counts;
         countsCpy[key][i] = newCount;
         this.setState({ counts: countsCpy })
-        base.post(`${this.UID}/${key}`, {
+        base.post(`challenge/${this.UID}/${key}`, {
             data: countsCpy[key],
             then(){
-                console.log("count updated")
+               console.log("firebase updated")
             }
         });
     }
@@ -87,6 +86,8 @@ class Challenge extends React.Component {
                         <div className="col-sm-12 col-md-6 center-block">
                         { this.state.counts.pushups.length && <Counter
                             count={ this.state.counts.pushups[this.state.index] }
+                            goal={ this.state.counts.options.pushups.count }
+                            diff={this.state.counts.options.pushups.count - this.state.counts.pushups[this.state.index]}
                             countType="Push Ups" 
                             updateCount={this.updateCount.bind( this )} />}
                         </div>
@@ -94,6 +95,8 @@ class Challenge extends React.Component {
 
                         { this.state.counts.pushups.length && <Counter
                             count={ this.state.counts.pullups[this.state.index] }
+                            goal={ this.state.counts.options.pullups.count }
+                            diff={this.state.counts.options.pullups.count - this.state.counts.pullups[this.state.index] }
                             countType="Pull Ups" 
                             updateCount={this.updateCount.bind( this )} /> }
                         </div>
