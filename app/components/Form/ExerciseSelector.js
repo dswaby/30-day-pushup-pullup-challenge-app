@@ -9,10 +9,13 @@ class ExerciseSelector extends React.Component {
     }
         componentWillMount() {
             this.exerciseCount = new Number(this.props.defaultNumber).valueOf();
-            this.exerciseId = this.props.exerciseName;
+            this.exerciseId = this.props.exerciseName.replace(" ", "").toLowerCase();
+            this.exerciseEnabled = true;
         }
         getExercise (exerciseRef) {
-            this.exercise = exerciseRef;
+            if (exerciseRef) {
+                this.exercise = exerciseRef.checked;
+            }
             this.handleOptionsChange();
         }
         subtractTen(e) {
@@ -26,7 +29,7 @@ class ExerciseSelector extends React.Component {
             this.handleOptionsChange();
         }
         handleOptionsChange() {
-            this.props.updateExercise( this.exerciseId, this.exercise.checked, this.exerciseCount  )
+            this.props.updateExercise( this.exerciseId, this.exercise, this.exerciseCount  )
         }
         render() {
             return ( 

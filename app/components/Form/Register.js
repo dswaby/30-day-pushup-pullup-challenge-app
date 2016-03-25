@@ -60,16 +60,16 @@ class Register extends React.Component {
             } else {
                 // user creation successfull, create initial user data fields 
                 // navigate to challenge once posted
-                const exercises = Object.assign( {} ,this.exercises );
+                const opts = Object.assign( {} ,this.exercises );
 
 
-                const initialData = userEntries( exercises );
+                const initialData = userEntries( opts );
 
                 if (name) {
                     initialData.name = name;
                 }
 
-                base.post(`${userData.uid}`, {
+                base.post(`challenge/${userData.uid}`, {
                     data: initialData,
                     then() {
                         selfie.successHandler( data )
@@ -98,17 +98,11 @@ class Register extends React.Component {
                 password: password
             }, this.responseHandler.bind( this ));
         }
-        getPushups(enabled, count) {
-            this.setState({ pushups: {enabled: enabled, count: count} });
-        }
         updateExercises(exerciseId, enabled, count) {
-            const currentExercises = Object.assign( {} ,this.exercises );
-            
-            currentExercises[exerciseId] = {
+            this.exercises[exerciseId] = {
                 enabled: enabled,
                 count: count
             }
-            this.exercises = currentExercises;
         }
         render() {
             return ( 

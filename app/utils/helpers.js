@@ -11,16 +11,21 @@ export function todaysIndex ( startDate ) {
     return (todaysDate - startDate)/86400000;
 }
 
-export default function userEntries( exercises ) {
+export default function userEntries( opts ) {
     var d = new Date();
     let startDate = d.getTime();
     let zeroArray = [];
-    let initialData = {
-        exercises:[],
-        "challengeStart": today(),
-        "challengeEnd": today() + 2592000000
+    let defaults = {
+        "pushups": {
+            "enabled": true,
+            "count": 300
+        },
+        "pullups": {
+            "enabled": true,
+            "count": 200
+        }
     };
-    var exerciseObj = {};
+    let config = Object.assign(defaults, opts);
 
     // create obj keys as dates for each day of challenge
     for (let i = 0; i < 30; i++) {
@@ -29,13 +34,14 @@ export default function userEntries( exercises ) {
         // fill array with zeros
         zeroArray.push(0);
     }
-    for ( var key in exercises) {
-        if (exercises.hasOwnProperty(key) && exercises[key].enabled) {
-            initialData.exercises.push([key, exercises[key].count, zeroArray])
-            initialData[key] = zeroArray;
-        } 
+
+    return {
+        "challengeStart": today(),
+        "challengeEnd": today() + 2592000000,
+        "pushups": zeroArray,
+        "pullups": zeroArray,
+        "options": config
     }
-    return initialData;
 }
 
 
