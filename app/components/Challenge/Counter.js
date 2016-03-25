@@ -12,9 +12,8 @@ class Counter extends React.Component {
     }
     calculateIntensity() {
     	var counterGoal = this.props.goal;
-    	var goalPercentage;
-		goalPercentage = Math.ceil((this.props.count)/counterGoal * 100);
-
+		var goalPercentage = Math.ceil((this.props.count)/counterGoal * 100);
+		console.log(goalPercentage)
 		if (goalPercentage <= 5) {
 			this.setState( { intensity: "icon-neutral" } )
 		}
@@ -36,14 +35,17 @@ class Counter extends React.Component {
     	this.calculateIntensity()
     }
     
-    componentDidReceiveProps(){
+    componentWillReceiveProps( nextProps ){
+    	if (nextProps.count >= this.props.goal) {
+			this.setState( { goalCompleted: true } );
+		}
     	this.calculateIntensity()
     }
 	render() {
 		return (
 			<div className="counter">
+				{this.props.img && <div className="col-sm-12"><img className="img-responsive center-block" style={{maxHeight: 100}} src={this.props.img} /></div>}
 				{this.state.goalCompleted && <h1 className="success">{this.props.countType} Goal reached!</h1>}
-				{this.props.image && <img src={this.props.img} />}
 				<h2>{ this.props.count } of {this.props.goal} {this.props.countType}<br /><p></p></h2>
 				<Button incrementBy="5" countType={ this.props.countType } updateCount={ this.props.updateCount } count={ this.props.count }/>
 				<p className="icomoon"> <span className={this.state.intensity}></span>
