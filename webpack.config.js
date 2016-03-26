@@ -1,7 +1,11 @@
+var webpack = require('webpack');
+var PROD = JSON.parse(process.env.PROD_ENV || '0');
+
 module.exports = {
     entry: "./app/App.js",
     output: {
-        filename: "public/bundle.js"
+        path: './public',
+        filename: PROD ? 'bundle.min.js' : 'bundle.js'
     },
     module: {
         loaders: [ {
@@ -15,5 +19,8 @@ module.exports = {
             test: /\.less$/,
             loader: "style!css!less?strictMath&noIeCompat"
         } ]
-    }
+    },
+     plugins: PROD ? [
+        new webpack.optimize.UglifyJsPlugin({minimize: true})
+    ] : []
 }
