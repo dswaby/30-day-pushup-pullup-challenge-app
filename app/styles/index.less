@@ -11,23 +11,19 @@
 @import "~bootstrap/less/responsive-utilities.less";
 @import "~bootstrap/less/navbar";
 // css spinner-loader
-@import "loading-spinner.less";
-@import "counter";
+// @import "counter";
 //mixins
-@import "~bootstrap/less/mixins/center-block";
-
+// @import "~bootstrap/less/mixins/center-block";
 @font-face {
     font-family: 'icomoon';
-    src:    url('http://swa.by/static/fonts/icomoon.eot?dige2i');
-    src:    url('http://swa.by/static/fonts/icomoon.eot?dige2i#iefix') format('embedded-opentype'),
-        url('http://swa.by/static/fonts/icomoon.ttf?dige2i') format('truetype'),
-        url('http://swa.by/static/fonts/icomoon.woff?dige2i') format('woff'),
-        url('http://swa.by/static/fonts/icomoon.svg?dige2i#icomoon') format('svg');
+    src: url('http://swa.by/static/fonts/icomoon.eot?dige2i');
+    src: url('http://swa.by/static/fonts/icomoon.eot?dige2i#iefix') format('embedded-opentype'), url('http://swa.by/static/fonts/icomoon.ttf?dige2i') format('truetype'), url('http://swa.by/static/fonts/icomoon.woff?dige2i') format('woff'), url('http://swa.by/static/fonts/icomoon.svg?dige2i#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="icon-"],
+[class*=" icon-"] {
     /* use !important to prevent issues with browser extensions that change fonts */
     font-family: 'icomoon' !important;
     speak: none;
@@ -37,45 +33,56 @@
     font-variant: normal;
     text-transform: none;
     line-height: 1;
-
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-p, h1,h2,h3,h4,h5, a {
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+a {
     font-family: 'Avenir Light';
 }
+
 body {
     margin: 0;
-
 }
-
 
 .icon-undo:before {
     content: "\e900";
 }
+
 .icon-happy:before {
     content: "\e901";
 }
+
 .icon-shocked:before {
     content: "\e902";
 }
+
 .icon-neutral:before {
     content: "\e903";
 }
+
 .icon-wondering:before {
     content: "\e904";
 }
+
 .icon-frustrated:before {
     content: "\e905";
 }
+
 .icon-arrow-up2:before {
     content: "\e906";
 }
+
 .icon-arrow-down2:before {
     content: "\e907";
 }
-
 
 @font-face {
     font-family: 'Avenir Light';
@@ -90,6 +97,7 @@ body {
     font-weight: normal;
     font-style: normal;
 }
+
 @font-face {
     font-family: 'Avenir Black';
     src: url('http://swa.by/static/fonts/avenir-black.eot?#iefix') format('embedded-opentype'), url('http://swa.by/static/fonts/avenir-black.otf') format('opentype'), url('http://swa.by/static/fonts/avenir-black.woff') format('woff'), url('http://swa.by/static/fonts/avenir-black.ttf') format('truetype'), url('http://swa.by/static/fonts/avenir-black.svg#avenir-black') format('svg');
@@ -104,15 +112,33 @@ h2 {
 h1.title {
     font-family: 'Avenir Medium';
 }
+
 p.icomoon {
     padding-top: 30px;
     font-family: 'Avenir Medium';
 }
+
 span.icomoon {
     padding-top: 30px;
 }
+
 .register {
     position: relative;
+    padding-bottom: 100px;
+}
+
+.reg-wrap {
+    padding: 20px;
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 568px)and (-webkit-min-device-pixel-ratio: 2) {
+    .reg-wrap {
+        padding: 0;
+        h1 {
+            padding: 0 10px 0 10px;
+            font-size: 20px;
+        }
+    }
 }
 
 .login {
@@ -121,7 +147,7 @@ span.icomoon {
     height: 100%;
     width: 100%;
     overflow-y: hidden;
-    max-height: 500px;
+    max-height: 1400px;
     /* approximate max height */
     transition-property: all;
     transition-duration: 1.5s;
@@ -138,10 +164,12 @@ span.icomoon {
     right: 0;
     font-size: 22px;
 }
-
-.login.closed {
+.reg-wrap.closed {
+    .login {
     max-height: 0;
 }
+}
+
 
 .optional-field {
     font-weight: 800;
@@ -154,7 +182,6 @@ span.icomoon {
 .registration-box {
     background-color: #e6e6e6;
     padding: 30px;
-    border-radius: 5px;
 }
 
 .btn-dig-blue {
@@ -166,14 +193,15 @@ span.icomoon {
 .text-danger {
     font-family: 'Avenir Black' !important;
 }
+
 h1.success {
     color: green;
 }
+
 .info-section {
     background-color: #f3f5f7;
 }
+
 .home-section {
-
-
-    border-bottom:1px solid rgb(102, 102, 102);
+    border-bottom: 1px solid rgb(102, 102, 102);
 }
