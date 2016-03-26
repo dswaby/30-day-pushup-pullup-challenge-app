@@ -4,8 +4,7 @@ var PROD = JSON.parse(process.env.PROD_ENV || '0');
 module.exports = {
     entry: "./app/App.js",
     output: {
-        path: './public',
-        filename: PROD ? 'bundle.min.js' : 'bundle.js'
+        filename: PROD ? 'dist/bundle.min.js' : 'public/bundle.js'
     },
     module: {
         loaders: [ {
