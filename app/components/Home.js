@@ -7,7 +7,7 @@ import UserForm from './Form/UserForm'
 
 const base = Rebase.createClass('https://30day.firebaseio.com');
 
-class Home extends React.Component {
+export default class Home extends React.Component {
     constructor( props ){
         super(props)
         this.state = {
@@ -64,7 +64,7 @@ class Home extends React.Component {
                             </p>
                         </div>
                         <div className="col-sm-6">
-                            <h2 className="text-center">Login to continue tracking your progress</h2>
+                            <h2 className="text-center">Track your challenge's progress</h2>
                             <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/pushups.jpg" className="center-block img-responsive"/>
                         </div>
                         </div>
@@ -80,5 +80,3 @@ class Home extends React.Component {
 Home.propTypes = {
     history: React.PropTypes.object.isRequired
 }
-
-export default Home

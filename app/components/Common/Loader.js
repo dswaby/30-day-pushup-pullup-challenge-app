@@ -1,4 +1,6 @@
 import React from 'react'
+var css = require("!style!css!less!./../../styles/loading-spinner.less");
+
 
 const Loader = () => {
   return (

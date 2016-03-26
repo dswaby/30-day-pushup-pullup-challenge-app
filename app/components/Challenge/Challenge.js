@@ -1,7 +1,7 @@
 import React from 'react'
 import Counter from './Counter'
 import Rebase from 're-base'
-import Loader from './Loader'
+import Loader from './../Common/Loader'
 import { hashHistory } from 'react-router'
 import { todaysIndex } from './../../utils/helpers'
 
@@ -93,13 +93,14 @@ class Challenge extends React.Component {
                             updateCount={this.updateCount.bind( this )} />}
                         </div>
                         <div className="col-sm-12 col-md-6 center-block">
-
-                        { this.state.counts.pushups.length && <Counter
-                            count={ this.state.counts.pullups[this.state.index] }
-                            goal={ this.state.counts.options.pullups.count }
-                            diff={this.state.counts.options.pullups.count - this.state.counts.pullups[this.state.index] }
-                            countType="Pull Ups" 
-                            updateCount={this.updateCount.bind( this )} /> }
+                            { this.state.counts.pushups.length && 
+                            <Counter
+                                count={ this.state.counts.pullups[this.state.index] }
+                                goal={ this.state.counts.options.pullups.count }
+                                diff={this.state.counts.options.pullups.count - this.state.counts.pullups[this.state.index] }
+                                countType="Pull Ups" 
+                                updateCount={this.updateCount.bind( this )} 
+                            /> }
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 import React from 'react'
 import Button from './Button'
 import { todaysIndex } from './../../utils/helpers'
+var css = require("!style!css!less!./../../styles/counter.less");
 
 class Counter extends React.Component {
 	constructor(props) {
@@ -44,15 +45,26 @@ class Counter extends React.Component {
 	render() {
 		return (
 			<div className="counter">
-				{this.props.img && <div className="col-sm-12"><img className="img-responsive center-block" style={{maxHeight: 100}} src={this.props.img} /></div>}
-				{this.state.goalCompleted && <h1 className="success">{this.props.countType} Goal reached!</h1>}
-				<h2>{ this.props.count } of {this.props.goal} {this.props.countType}<br /><p></p></h2>
-				<Button incrementBy="5" countType={ this.props.countType } updateCount={ this.props.updateCount } count={ this.props.count }/>
+				{this.props.img && 
+				<div className="col-sm-12">
+					<img className="img-responsive center-block" style={{maxHeight: 100}} src={this.props.img} />
+				</div>}
+				{this.state.goalCompleted && 
+					<h1 className="success">
+						Goal reached!
+					</h1>}
+				<h2>{ this.props.count } of {this.props.goal} {this.props.countType}</h2>
+				<Button 
+					incrementBy="5" 
+					countType={ this.props.countType } 
+					updateCount={ this.props.updateCount } 
+					count={ this.props.count }
+				/>
 				<p className="icomoon"> <span className={this.state.intensity}></span>
 				<br />
 				<em> 
-				{Math.abs(this.props.diff)} 
-				{this.state.goalCompleted &&  <span> above goal, great job</span>}
+				{Math.abs(this.props.diff) !== 0 && this.state.goalCompleted && <span>{Math.abs(this.props.diff)} above goal, </span>} 
+				{this.state.goalCompleted &&  <span>great job</span>}
 				{!this.state.goalCompleted && <span> more to go</span>}
 				</em>
 				</p>

@@ -3,7 +3,7 @@ import { Link, Router, hashHistory } from 'react-router'
 import Rebase from 're-base'
 import UserForm from './UserForm'
 import userEntries from './../../utils/helpers'
-import Loader from './../Challenge/Loader'
+import Loader from './../Common/Loader'
 import ExerciseSelector from './ExerciseSelector'
 
 const base = Rebase.createClass('https://30day.firebaseio.com/');
@@ -24,9 +24,7 @@ class Register extends React.Component {
 
         getName(nameRef){
             this.name = nameRef;
-
         }
-
         authDataCallback(authData){
             if (authData) {
                 this.uid = authData.uid;
@@ -36,7 +34,6 @@ class Register extends React.Component {
                 console.log( "user is not  logged in ")
             }
         }
-
         errorHandler(error) {
             switch (error.code) {
                 case "EMAIL_TAKEN":
@@ -61,8 +58,6 @@ class Register extends React.Component {
                 // user creation successfull, create initial user data fields 
                 // navigate to challenge once posted
                 const opts = Object.assign( {} ,this.exercises );
-
-
                 const initialData = userEntries( opts );
 
                 if (name) {
@@ -79,7 +74,7 @@ class Register extends React.Component {
         }
         successHandler ( signupData ) {
             const userAuth = base.getAuth();
-            const el = document.getElementById("register");
+            const el = document.getElementById("form-wrap");
             this.uid = signupData.uid;
             // this.token = userAuth.token;
             el.className += " closed";
@@ -105,25 +100,56 @@ class Register extends React.Component {
             }
         }
         render() {
-            return ( 
-                <div className="register">
-                    <div id="register" className="login">
-                        <div className="col-md-3 col-sm-3"></div>
-                        <div className="col-md-6 col-sm-6 registration-box" style={{ padding:30}}>
-                            {this.state.error && <label className = "text-danger" style={{ paddingLeft: 10 }}> {this.state.error} </label> }
-                            <div className="form-group">
-                                <label>Name <span className="optional-field">**optional</span></label>
-                                <input type="text" placeholder="Username" className="form-control" ref={(nameRef) => this.getName( nameRef )} />
+            return (
+                <div id="form-wrap" className="reg-wrap">
+                    <h1>Create your 30-Day-Challenge Account</h1>
+                    <div className="register">
+                        <div id="register" className="login">
+                            <div className="col-md-3 col-sm-3"></div>
+                            <div className="col-md-6 col-sm-6 registration-box" >
+                                {this.state.error && <label className = "text-danger" style={{ paddingLeft: '10px' }}> {this.state.error} </label> }
+                                <div className="form-group">
+                                    <label>Name <span className="optional-field">**optional</span></label>
+                                    <input type="text" placeholder="Username" className="form-control" ref={(nameRef) => this.getName( nameRef )} />
+                                </div>
+                                <h3> Choose Exercises </h3>
+                                <ExerciseSelector 
+                                    img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/pushup.jpg" 
+                                    exerciseName="Push Ups" 
+                                    defaultNumber="300" 
+                                    updateExercise={this.updateExercises.bind( this ) } 
+                                />
+                                <ExerciseSelector 
+                                    img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/pushup.jpg" 
+                                    exerciseName="Pull Ups" 
+                                    defaultNumber="200" 
+                                    updateExercise={this.updateExercises.bind( this ) } 
+                                />
+                                <ExerciseSelector 
+                                    img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/pushup.jpg" 
+                                    exerciseName="Squats" 
+                                    defaultNumber="200" 
+                                    updateExercise={this.updateExercises.bind( this ) } 
+                                />
+                                {this.state.loading && !this.state.error && <Loader /> }
+                                {!this.state.loading && 
+                                    <UserForm 
+                                        handleUserForm={this.handleSubmit.bind( this )} 
+                                        buttonText="Register" 
+                                        className="text-center" 
+                                    />}
+                                <p style={{paddingTop: 10}}>
+                                    Have an account already? 
+                                    <Link to="/">Log in?</Link>
+                                </p>
                             </div>
-                            <ExerciseSelector exerciseName="Push Ups" defaultNumber="300" updateExercise={this.updateExercises.bind( this ) } />
-                            <ExerciseSelector exerciseName="Pull Ups" defaultNumber="200" updateExercise={this.updateExercises.bind( this ) } />
-                            {this.state.loading && !this.state.error && <Loader /> }
-                            {!this.state.loading && <UserForm handleUserForm={this.handleSubmit.bind( this )} buttonText="Register" className="text-center" />}
-                            <p style={{paddingTop: 10}}>Have an account already? <Link to="/">Log in?</Link></p>
-                        </div>
-                        <div className="col-md-3 col-sm-3"></div>
-                    </div> 
-                    <p className="login-under">Account Creation Successfull!!<br /> <a onClickCapture={this.navigateChallenge.bind( this )} href="#">Log in and Get Started</a></p>
+                            <div className="col-md-3 col-sm-3"></div>
+                            <div class="challenge-summary col-md-12">
+
+                            </div>
+                        </div> 
+                        <p className="login-under">Account Creation Successfull!!<br /> <a onClickCapture={this.navigateChallenge.bind( this )} href="#">Log in and Get Started</a></p>
+                    </div>
                 </div>
             )
         }
