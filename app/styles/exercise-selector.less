@@ -1,117 +1,245 @@
-@mobile: ~"only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2)";
-.exercise-selector {
-    display: inline-block;
-    width: 100%;
-    // height: 100px;
-    padding-bottom: 50%;
-}
-
-.selector-options {
-    margin-top: 5%;
-    position: absolute;
-    width: 50%;
-    top: 0;
-    right: 0;
-    opacity: 0;
-    -webkit-transition: opacity .7s;
-    -moz-transition: opacity .7s;
-    -o-transition: opacity .7s;
-    transition: opacity .7s;
-    z-index: 20;
-    text-align: center;
-}
-
-.exercise-selector {
-    &.selected {
-        .selector-label {
-            opacity: 1;
-        }
-        .selector-options {
-            opacity: 1;
-            z-index: 5000;
-        }
-        img {
-            z-index: 400;
-            right: 75%;
-            right: none;
-            height: auto;
-            width: 40%;
-            padding-left: 0;
-            padding-top: 0;
-            margin-top: 10%;
-            border: 7px solid #337ab7;
-        }
-    }
-}
-
-.exercise-selector-button {
-    position: relative;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-color: none;
-    img {
-        position: absolute;
-        z-index: 5000;
-        height: auto;
-        width: 50%;
-        opacity: 1;
-        margin: 0 auto;
-        left: 0;
-        right: 0;
-        margin-top: 5%;
-        // pointer-events: none;
-        cursor: pointer;
-        // max-height: 125px;
-        border-radius: 5px;
-        padding-left: 10px;
-        padding-top: 10px;
-        // margin-bottom: 10px;
-        -webkit-transition: all .5s linear;
-        -moz-transition: all .5s linear;
-        -o-transition: all .5s linear;
-        transition: all .5s linear;
-        border: 0 solid #337ab7;
-    }
-}
-
-.selector-label {
-    opacity: 0;
-    font-size: 20px;
-    padding-right: 5px;
-    width: 100%;
-}
-
+@mobile: ~"only screen and (min-device-width: 320px) and (max-device-width: 568px)";
 .augment-btn {
     width: 45%;
     padding-top: 10px !important;
     padding-bottom: 10px !important;
 }
 
-.focused-text {
-    display: block;
-    text-align: center;
-    font-size: 80px;
+/*
+See the explanation of the animation here:
+http://codepen.io/timseverien/pen/yvJkm
+*/
+
+@-webkit-keyframes check {
+    0% {
+        height: 0;
+        width: 0;
+    }
+    25% {
+        height: 0;
+        width: 10px;
+    }
+    50% {
+        height: 20px;
+        width: 10px;
+    }
 }
 
-@media @mobile {
-    .selector-options {
-        margin-top: 20px;
+@-moz-keyframes check {
+    0% {
+        height: 0;
+        width: 0;
     }
-    .exercise-selector-button img {
-        margin: 0 auto;
-        &.selected {
-            margin-top: 14%;
-        }
+    25% {
+        height: 0;
+        width: 10px;
     }
-    .focused-text {
-        font-size: 53px;
+    50% {
+        height: 20px;
+        width: 10px;
     }
-    .exercise-selector {
-        &.selected {
-            padding-bottom: 60%;
-            img {
-                margin-top: 15%;
-            }
-        }
+}
+
+@-ms-keyframes check {
+    0% {
+        height: 0;
+        width: 0;
     }
+    25% {
+        height: 0;
+        width: 10px;
+    }
+    50% {
+        height: 20px;
+        width: 10px;
+    }
+}
+
+@keyframes check {
+    0% {
+        height: 0;
+        width: 0;
+    }
+    25% {
+        height: 0;
+        width: 10px;
+    }
+    50% {
+        height: 20px;
+        width: 10px;
+    }
+}
+
+body {
+    background-color: #6aa;
+    font-family: 'Lato', sans-serif;
+    font-weight: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 100;
+}
+
+.challenge-summary {
+    position: fixed;
+    height: 20%;
+    min-height: 200px;
+    width: 175px;
+    top: 40%;
+    background-color: #fff;
+    right: 0;
+    border-radius: 3px;
+    border: 2px solid #555;
+    text-align: center;
+    @media @mobile {
+        position: relative !important;
+        display: inline-block;
+        width: 100%;
+        padding: 20px;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+}
+input[type=checkbox] {
+  display: none;
+}
+/* 
+- Style each label that is directly after the input
+- position: relative; will ensure that any position: absolute children will position themselves in relation to it
+*/
+
+input[type=checkbox] + label {
+  position: relative;
+  // background-image: url(http://csscheckbox.com/checkboxes/u/csscheckbox_e54f06a318b764a2407a7abef25e4e5a.png);
+  height: 50px;
+  width: 50px;
+  display: block;
+  // border-radius: 50%;
+  transition: box-shadow 0.4s, border 0.4s;
+  border: solid 5px #FFF;
+  box-shadow: 0 0 1px #FFF;/* Soften the jagged edge */
+  cursor: pointer;
+}
+/* Provide a border when hovered and when the checkbox before it is checked */
+
+input[type=checkbox] + label:hover,
+input[type=checkbox]:checked + label {
+  border: solid 5px #1C7B8C;
+  box-shadow: 0 0 1px #1C7B8C;
+  /* Soften the jagged edge */
+}
+/* 
+- Create a pseudo element :after when checked and provide a tick
+- Center the content
+*/
+
+input[type=checkbox]:checked + label:after {
+  content: '\2714';
+  /*content is required, though it can be empty - content: '';*/
+  height: 1em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  color: #1C7B8C;
+  line-height: 1;
+  font-size: 18px;
+  text-align: center;
+}
+
+.exercise-selector {
+  display: inline-block;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.frequency-text{
+  font-family: 'Avenir Light';
+    font-size: 23px;
+    line-height: 23px;
+}
+
+.event-trapper {
+  // float: left;
+  // display: inline-block;
+  margin: auto;
+  height: auto;
+  width: 50%;
+  padding: 40px;
+  min-width: 125px;
+  @media @mobile {
+    width: 200px;
+  }
+}
+
+.radio-block {
+  display: inline-block;
+  position: relative;
+  width: 50%;
+  float: right;
+  margin-top: 15px;
+  padding-top: 45px;
+  padding-left: 40px;
+  @media @mobile {
+    float: none;
+    width: 100%;
+    padding-top: 15px;
+    padding-left: 10px;
+  }
+}
+
+.counter-select-text {
+  width: 50%;
+  float: left;
+  position: relative;
+  text-align: center;
+  font-size: 80px;
+  @media @mobile {
+    float: none;
+  }
+}
+.exercise-example {
+  // display: inline-block;
+  float: left;
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+}
+.selector-options {
+
+}
+.exercise-name {
+  h2 {
+    font-family: 'Avenir Black';
+    margin-top: 0;
+  }
+  width: 100%;
+  text-align: center;
+  display: inline;
+  float: left;
+  @media @mobile {
+    width: 100%;
+  }
+}
+
+.click-block {
+  // display: inline-block;
+  float: left;
+  width: 50%;
+}
+.img-block {
+  // float: left;
+}
+
+.radio {
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
 }

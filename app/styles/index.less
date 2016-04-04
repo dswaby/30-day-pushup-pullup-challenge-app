@@ -22,6 +22,10 @@
     font-style: normal;
 }
 
+ul {
+    list-style-type:none;
+}
+
 [class^="icon-"],
 [class*=" icon-"] {
     /* use !important to prevent issues with browser extensions that change fonts */
@@ -109,8 +113,11 @@ h2 {
     font-family: 'Avenir Light' !important;
 }
 
-h1.title {
-    font-family: 'Avenir Medium';
+.main-title, .main-title:hover {
+        font-family: 'Avenir Light';
+        color: #383838;
+        text-decoration: none;
+
 }
 
 p.icomoon {
@@ -147,7 +154,7 @@ span.icomoon {
     height: 100%;
     width: 100%;
     overflow-y: hidden;
-    max-height: 1400px;
+    // max-height: 1400px;
     /* approximate max height */
     transition-property: all;
     transition-duration: 1.5s;

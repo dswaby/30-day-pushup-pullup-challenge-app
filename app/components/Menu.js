@@ -14,10 +14,19 @@ class Menu extends React.Component {
     componentWillMount() {
         base.onAuth( this.authCallback.bind( this ) )
     }
+    componentDidMount() {
+      this.menuEl = document.getElementById("toggle-icon")
+    }
     authCallback( authData ) {
     	if ( authData && authData.auth ) {
     		this.setState({ loggedIn: true })
     	}
+        else {
+            this.setState({ loggedIn: false })
+        }
+    }
+    toggleMenu(){
+
     }
     unAuth() {
     	this.setState({ loggedIn: false })
@@ -27,7 +36,15 @@ class Menu extends React.Component {
     render () {
     	return (
     		<div className="menu pull-right">
-    			{this.state.loggedIn && <span> <a href="#" onClick={this.unAuth.bind( this )}>Log-Out</a></span>}
+                <div id="toggle-icon" onClick={ this.toggleMenu }></div>
+    			{this.state.loggedIn && 
+                    <ul>
+                        <li><Link to="overview">Home</Link></li>
+                        <li><Link to="overview">Settings</Link></li>
+                        <li><Link to="overview">View Progress</Link></li>
+                        <li><a href="#" onClick={ this.unAuth.bind( this ) }>Log-Out</a></li>
+                    </ul>
+                }
     		</div>
     	)
     }

@@ -14,7 +14,6 @@ class Counter extends React.Component {
     calculateIntensity() {
     	var counterGoal = this.props.goal;
 		var goalPercentage = Math.ceil((this.props.count)/counterGoal * 100);
-		console.log(goalPercentage)
 		if (goalPercentage <= 5) {
 			this.setState( { intensity: "icon-neutral" } )
 		}
@@ -63,9 +62,9 @@ class Counter extends React.Component {
 				<p className="icomoon"> <span className={this.state.intensity}></span>
 				<br />
 				<em> 
-				{Math.abs(this.props.diff) !== 0 && this.state.goalCompleted && <span>{Math.abs(this.props.diff)} above goal, </span>} 
-				{this.state.goalCompleted &&  <span>great job</span>}
-				{!this.state.goalCompleted && <span> more to go</span>}
+				{this.props.diff !== 0 && this.state.goalCompleted && <span>{this.props.diff} above goal, way to go!</span>} 
+				{this.props.diff === 0 && this.state.goalCompleted &&  <span>goal reached, great job!!!</span>}
+				{!this.state.goalCompleted && <span>{this.props.diff} to reach goal</span>}
 				</em>
 				</p>
 			</div>

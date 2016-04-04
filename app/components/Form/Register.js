@@ -16,7 +16,13 @@ class Register extends React.Component {
                 error: false,
                 uid: "",
                 name: "",
-                token: ""
+                token: "",
+                pushups: false,
+                pullups: false,
+                squats: false,
+                pushupsCount: 0,
+                pullupsCount: 0,
+                squatsCount: 0        
             }
             // base.onAuth( this.authDataCallback.bind(this) );
             this.exercises = {};
@@ -61,7 +67,7 @@ class Register extends React.Component {
                 const initialData = userEntries( opts );
 
                 if (name) {
-                    initialData.name = name;
+                    initialData.options.name = name;
                 }
 
                 base.post(`challenge/${userData.uid}`, {
@@ -94,10 +100,33 @@ class Register extends React.Component {
             }, this.responseHandler.bind( this ));
         }
         updateExercises(exerciseId, enabled, count) {
+
             this.exercises[exerciseId] = {
                 enabled: enabled,
                 count: count
             }
+
+            switch ( exerciseId ) {
+                case "pushups":
+                    if ( this.state.pushups !== enabled  || this.state.pushupsCount !== count)  {
+                        this.setState({ pushups: enabled, pushupsCount: count })
+                    }
+                    break;
+                case "pullups":
+                    if ( this.state.pullups !== enabled  || this.state.pullupsCount !== count )  {
+                        this.setState({ pullups: enabled, pullupsCount: count })
+                    }
+                    break;
+                case "squats":
+                    if ( this.state.squats !== enabled || this.state.squatsCount !== count )  {
+                        this.setState({ squats: enabled, squatsCount: count })
+                    }
+                    break;
+                default: 
+                    console.log("fall through")
+                    break;
+            }
+            // this.setState({ enabled[exerciseId]: enabled })
         }
         render() {
             return (
@@ -105,8 +134,8 @@ class Register extends React.Component {
                     <h1>Create your 30-Day-Challenge Account</h1>
                     <div className="register">
                         <div id="register" className="login">
-                            <div className="col-md-3 col-sm-3"></div>
-                            <div className="col-md-6 col-sm-6 registration-box" >
+                            <div className="col-md-2 col-sm-2"></div>
+                            <div className="col-md-8 col-sm-8 registration-box" >
                                 {this.state.error && <label className = "text-danger" style={{ paddingLeft: '10px' }}> {this.state.error} </label> }
                                 <div className="form-group">
                                     <label>Name <span className="optional-field">**optional</span></label>
@@ -117,20 +146,30 @@ class Register extends React.Component {
                                     img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/pushup.jpg" 
                                     exerciseName="Push Ups" 
                                     defaultNumber="300" 
-                                    updateExercise={this.updateExercises.bind( this ) } 
+                                    updateExercise={this.updateExercises.bind( this ) }
+                                    checked={false}
                                 />
                                 <ExerciseSelector 
                                     img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/pushup.jpg" 
                                     exerciseName="Pull Ups" 
                                     defaultNumber="200" 
                                     updateExercise={this.updateExercises.bind( this ) } 
+                                    checked={false}
                                 />
                                 <ExerciseSelector 
                                     img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/pushup.jpg" 
                                     exerciseName="Squats" 
                                     defaultNumber="200" 
                                     updateExercise={this.updateExercises.bind( this ) } 
+                                    checked={false}
                                 />
+                                <div className="challenge-summary">
+                                    <h3>Challenge Summary</h3>
+                                     { !this.state.pushups && !this.state.pullups && !this.state.squats && <span>No exercises Selected, make a selection</span> }
+                                    { this.state.pushups && this.state.pushupsCount && <p>pushups: { this.state.pushupsCount }</p>}
+                                    { this.state.pullups && this.state.pullupsCount && <p>pullups: { this.state.pullupsCount }</p>}
+                                    { this.state.squats && this.state.squatsCount && <p>squats: { this.state.squatsCount }</p>}
+                                </div>
                                 {this.state.loading && !this.state.error && <Loader /> }
                                 {!this.state.loading && 
                                     <UserForm 
@@ -144,9 +183,7 @@ class Register extends React.Component {
                                 </p>
                             </div>
                             <div className="col-md-3 col-sm-3"></div>
-                            <div class="challenge-summary col-md-12">
 
-                            </div>
                         </div> 
                         <p className="login-under">Account Creation Successfull!!<br /> <a onClickCapture={this.navigateChallenge.bind( this )} href="#">Log in and Get Started</a></p>
                     </div>

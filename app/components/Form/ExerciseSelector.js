@@ -1,12 +1,12 @@
 import React from 'react'
 var css = require("!style!css!less!./../../styles/exercise-selector.less");
 
-
 class ExerciseSelector extends React.Component {
     constructor( props ) {
         super( props )
         this.state = {
-            count: this.props.defaultNumber
+            count: this.props.defaultNumber,
+            checked: this.props.checked || false
         }
     }
     guid() {
@@ -21,13 +21,12 @@ class ExerciseSelector extends React.Component {
     componentWillMount() {
         this.exerciseCount = new Number( this.props.defaultNumber ).valueOf();
         this.exerciseId = this.props.exerciseName.replace( " ", "" ).toLowerCase();
-        this.exerciseEnabled = false;
         this.elId = this.guid();
+        this.setState({ checked: this.props.enabled })
     }
     componentDidMount() {
         this.el = document.getElementById( this.elId );
     }
-
     getExercise( exerciseRef ) {
         if ( exerciseRef ) {
             this.exercise = exerciseRef.checked;
@@ -35,63 +34,88 @@ class ExerciseSelector extends React.Component {
         this.handleOptionsChange();
     }
     subtractTen( e ) {
+        e.preventDefault();
         this.exerciseCount -= 10;
         this.setState( { count: this.exerciseCount } );
         this.handleOptionsChange();
     }
     addTen( e ) {
+        e.preventDefault();
         this.exerciseCount += 10;
         this.setState( { count: this.exerciseCount } );
         this.handleOptionsChange();
     }
     handleOptionsChange() {
-        this.props.updateExercise( this.exerciseId, this.exerciseEnabled, this.exerciseCount )
+        this.props.updateExercise( this.exerciseId, this.state.checked, this.exerciseCount )
     }
-    toggleSelected() {
-        if ( this.exerciseEnabled ) {
+    toggleSelected( e ) {
+
+        // this.setState({ checked: e.target.checked })
+        if ( this.state.checked ) {
             this.el.classList.remove( "selected" );
-            this.exerciseEnabled = false;
-        } else if ( !this.exerciseEnabled ) {
+            this.setState({ checked: false })
+        } else {
             this.el.classList.add( "selected" );
-            this.exerciseEnabled = true;
+            this.setState({ checked: true })
         }
         this.handleOptionsChange();
     }
 
     render() {
         return ( 
-            <div id={this.elId} className="exercise-selector">
-                <div className="exercise-selector-button" >
-                <label className="selector-label">{this.props.exerciseName }</label>
-                    <img onClick={this.toggleSelected.bind(this)} src={this.props.img} />
-                    <div className="selector-options">
-                        <label style={{paddingLeft:5, paddingRight:5}}><div className="focused-text">{ this.state.count }</div></label> 
-                        <div className="form-group">
-                            <button className="btn augment-btn pull-left" style={{marginRight:5}} onClick={ this.subtractTen.bind( this ) }>
-                                -10
-                            </button>
-                            <button className="btn augment-btn pull-right" onClick={ this.addTen.bind( this ) }>
-                                +10
-                            </button>
-                            <div class="radio" style={{textAlign: 'left'}}>
-                              <label>
-                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" defaultChecked />
-                                Daily
-                              </label>
-                            </div>
-                            <br />
-                            <div class="radio" style={{textAlign: 'left'}}>
-                              <label>
-                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" />
-                                Every Other Day
-                              </label>
-                            </div>
+            <div id={ this.elId } className="exercise-selector">
+                <div className="selector-options">
+                    <div className="click-block">
+                        <div className="exercise-name"> <h2>{this.props.exerciseName}</h2> </div>
+                        <div className="event-trapper" onClick={ this.toggleSelected.bind( this ) } >
+                            <p>enabled</p>
+                            <input 
+                                name="checkboxG1" 
+                                className="css-checkbox" 
+                                type="checkbox" 
+                                ref={ (exerciseRef) => this.getExercise( exerciseRef ) }  
+                                checked={ this.state.checked } 
+                            />
+                            <label htmlFor="checkboxG1"></label>
                         </div>
-                        <span className="optional-field">default { this.props.defaultNumber }</span>
                     </div>
-                </div>
-                
+                    <div className="img-wrap">
+                        <img className="exercise-example" src={this.props.img} />
+                    </div>
+                    <div style={{clear:"both"}}></div>
+
+                    <form className="radio-block">
+                        <div className="radio" style={{textAlign: 'left'}}>
+                          <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" defaultChecked />
+                            <span className="frequency-text">every day</span>
+                          </label>
+                        </div>
+                        <br />
+                        <div className="radio" style={{textAlign: 'left'}}>
+                          <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" />
+                            <span className="frequency-text">every other day</span>
+                          </label>
+                        </div>
+                    </form>
+
+                    <div className="counter-select-text">
+                    { this.state.count }
+                    <button className="btn augment-btn pull-left" style={{marginRight:5}} onClick={ this.subtractTen.bind( this ) }>
+                            -10
+                        </button>
+                        <button className="btn augment-btn pull-right" onClick={ this.addTen.bind( this ) }>
+                            +10
+                        </button>
+                    </div>
+
+                    <div className="col-lg-12 col-md-12 col-sm-12">
+                        
+                    </div>
             </div>
+                </div>
+
         )
     }
 }

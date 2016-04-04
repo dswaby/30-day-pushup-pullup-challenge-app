@@ -4,6 +4,9 @@ import Rebase from 're-base'
 import Loader from './../Common/Loader'
 import { hashHistory } from 'react-router'
 import { todaysIndex } from './../../utils/helpers'
+import Dropzone from 'react-dropzone'
+import request from 'superagent'
+
 
 const base = Rebase.createClass('https://30day.firebaseio.com/');
 
@@ -16,14 +19,25 @@ class Challenge extends React.Component {
             loading: true,
             dateString: "",
             counts: {
-                challengeStart: 0,
-                name: "",
                 pushups: [],
-                pullups: []
+                pullups: [],
+                options: {
+                    name: "",
+                    challengeStart: 0,
+                    challengeEnd: 0,
+                    pushups: {
+                        enabled: false
+                    },
+                    pullups: {
+                        enabled: false
+                    },
+                    squats: {
+                        enabled: false
+                    }
+                }
             }
         }
     }
-
     componentDidMount() {
         const today = new Date();
         this.setState({ dateString: today.toDateString() });
@@ -36,15 +50,13 @@ class Challenge extends React.Component {
             context: this,
             asArray: false,
             then( data ){
-                var index = todaysIndex( data.challengeStart );
-                if ( data.name ) { this.setState({ name: data.name })}
+                var index = todaysIndex( data.options.challengeStart );
+                if ( data.options.name ) { this.setState({ name: data.options.name })}
                 this.setState({ index: index, loading: false, challengeDay: index + 1 });
                 this.init( this.UID );
             }
           });
-        
     }
-
 	init ( uid ) {
         const authData = base.getAuth();
         if (!authData) {
@@ -57,9 +69,6 @@ class Challenge extends React.Component {
             state: 'counts'
         });
 	}
-
-
-
     updateCount ( newCount, counterFor ) {
         const i = this.state.index;
         const key = counterFor.replace(" ","").toLowerCase();
@@ -73,6 +82,16 @@ class Challenge extends React.Component {
             }
         });
     }
+    onDrop (files) {
+      var req = request.post('http://localhost:3000/upload');
+        files.forEach((file)=> {
+            req.attach(file.name, file);
+        });
+        req.end(this.uploadCompleted);
+    }
+    uploadCompleted () {
+        console.log("awwwww shit")
+    }
 
     render() {
     	return (
@@ -84,25 +103,37 @@ class Challenge extends React.Component {
     			<div className="row">
                     <div className="col-sm-12">
                         <div className="col-sm-12 col-md-6 center-block">
-                        { this.state.counts.pushups.length && <Counter
+                        { this.state.counts.options.pushups.enabled && this.state.counts.pushups.length && 
+                        <Counter
                             img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/Untitled_3.jpg"
                             count={ this.state.counts.pushups[this.state.index] }
                             goal={ this.state.counts.options.pushups.count }
-                            diff={this.state.counts.options.pushups.count - this.state.counts.pushups[this.state.index]}
+                            diff={Math.abs(this.state.counts.options.pushups.count - this.state.counts.pushups[this.state.index])}
                             countType="Push Ups" 
-                            updateCount={this.updateCount.bind( this )} />}
+                            updateCount={this.updateCount.bind( this )} />
+                        }
                         </div>
                         <div className="col-sm-12 col-md-6 center-block">
-                            { this.state.counts.pushups.length && 
-                            <Counter
-                                count={ this.state.counts.pullups[this.state.index] }
-                                goal={ this.state.counts.options.pullups.count }
-                                diff={this.state.counts.options.pullups.count - this.state.counts.pullups[this.state.index] }
-                                countType="Pull Ups" 
-                                updateCount={this.updateCount.bind( this )} 
-                            /> }
+                            { this.state.counts.options.pullups.enabled && this.state.counts.pullups.length && 
+                                <Counter
+                                    img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/Untitled_3.jpg"
+                                    count={ this.state.counts.pullups[this.state.index] }
+                                    goal={ this.state.counts.options.pullups.count }
+                                    diff={Math.abs(this.state.counts.options.pullups.count - this.state.counts.pullups[this.state.index]) }
+                                    countType="Pull Ups" 
+                                    updateCount={this.updateCount.bind( this )} /> 
+                            }
                         </div>
                     </div>
+                    {this.state.photoFeatureEnabled && 
+                    <div className="col-sm-12">
+                        <h4>Upload Comparison Photo</h4>
+                        <div className="center-block" style={{height:200, width:200}}>
+                        <Dropzone onDrop={this.onDrop}>
+                            <div>Try dropping some files here, or click to select files to upload.</div>
+                        </Dropzone>
+                        </div>
+                    </div>}
                 </div>
     		</div>
     	)
