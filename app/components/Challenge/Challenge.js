@@ -57,13 +57,16 @@ class Challenge extends React.Component {
             }
           });
     }
+    componentWillUnmount() {
+        base.removeBinding(this.ref)
+    }
 	init ( uid ) {
         const authData = base.getAuth();
         if (!authData) {
             const path = "/" ;
             hashHistory.replace(path);
         }
-        base.bindToState(`challenge/${uid}`, {
+        this.ref = base.bindToState(`challenge/${uid}`, {
             context: this,
             asArray: false,
             state: 'counts'

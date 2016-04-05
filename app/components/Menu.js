@@ -20,6 +20,7 @@ class Menu extends React.Component {
     authCallback( authData ) {
     	if ( authData && authData.auth ) {
     		this.setState({ loggedIn: true })
+            this.setState({ uid: authData.uid })
     	}
         else {
             this.setState({ loggedIn: false })
@@ -39,7 +40,7 @@ class Menu extends React.Component {
                 <div id="toggle-icon" onClick={ this.toggleMenu }></div>
     			{this.state.loggedIn && 
                     <ul>
-                        <li><Link to="challenge">Home</Link></li>
+                        <li><Link to={"challenge/" + this.state.uid}>Home</Link></li>
                         <li><Link to="overview">Settings</Link></li>
                         <li><Link to="overview">View Progress</Link></li>
                         <li><a href="#" onClick={ this.unAuth.bind( this ) }>Log-Out</a></li>
