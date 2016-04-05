@@ -101,7 +101,7 @@ class ExerciseSelector extends React.Component {
                     </form>
 
                     <div className="counter-select-text">
-                    { this.state.count }
+                    <div>{ this.state.count }</div>
                     <button className="btn augment-btn pull-left" style={{marginRight:5}} onClick={ this.subtractTen.bind( this ) }>
                             -10
                         </button>
