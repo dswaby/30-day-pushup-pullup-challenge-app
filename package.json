@@ -4,7 +4,7 @@
   "description": "react app for keeping track of personal 30 day challenge",
   "main": "index.js",
   "scripts": {
-    "start": "webpack -w"
+    "start": "export PROD_ENV=0 && webpack -w"
   },
   "author": "Danny Swaby",
   "license": "ISC",
