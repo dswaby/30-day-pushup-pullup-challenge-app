@@ -107,24 +107,26 @@ class Challenge extends React.Component {
                     <div className="col-sm-12">
                         <div className="col-sm-12 col-md-6 center-block">
                         { this.state.counts.options.pushups.enabled && this.state.counts.pushups.length && 
-                        <Counter
-                            img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/Untitled_3.jpg"
-                            count={ this.state.counts.pushups[this.state.index] }
-                            goal={ this.state.counts.options.pushups.count }
-                            diff={Math.abs(this.state.counts.options.pushups.count - this.state.counts.pushups[this.state.index])}
-                            countType="Push Ups" 
-                            updateCount={this.updateCount.bind( this )} />
+                            <Counter
+                                img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/Untitled_3.jpg"
+                                count={ this.state.counts.pushups[this.state.index] }
+                                goal={ this.state.counts.options.pushups.count }
+                                diff={Math.abs(this.state.counts.options.pushups.count - this.state.counts.pushups[this.state.index])}
+                                countType="Push Ups" 
+                                updateCount={this.updateCount.bind( this )} 
+                            />
                         }
                         </div>
                         <div className="col-sm-12 col-md-6 center-block">
                             { this.state.counts.options.pullups.enabled && this.state.counts.pullups.length && 
                                 <Counter
-                                    img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/Untitled_3.jpg"
+                                    img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/pullup.jpg"
                                     count={ this.state.counts.pullups[this.state.index] }
                                     goal={ this.state.counts.options.pullups.count }
                                     diff={Math.abs(this.state.counts.options.pullups.count - this.state.counts.pullups[this.state.index]) }
                                     countType="Pull Ups" 
-                                    updateCount={this.updateCount.bind( this )} /> 
+                                    updateCount={this.updateCount.bind( this )} 
+                                /> 
                             }
                         </div>
                     </div>

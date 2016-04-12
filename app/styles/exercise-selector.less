@@ -1,73 +1,67 @@
-@mobile: ~"only screen and (min-device-width: 320px) and (max-device-width: 568px)";
-.augment-btn {
-    width: 45%;
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
+@mobile: ~"only screen and (min-width: 320px) and (max-width: 568px)";
+@font-face {
+    font-family: 'icomoon-close';
+    src: url('http://swa.by/static/fonts/close.eot?dow6hr');
+    src: url('http://swa.by/static/fonts/close.eot?dow6hr#iefix') format('embedded-opentype'), url('http://swa.by/static/fonts/close.ttf?dow6hr') format('truetype'), url('http://swa.by/static/fonts/close.woff?dow6hr') format('woff'), url('http://swa.by/static/fonts/close.svg?dow6hr#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
-/*
-See the explanation of the animation here:
-http://codepen.io/timseverien/pen/yvJkm
-*/
-
-@-webkit-keyframes check {
-    0% {
-        height: 0;
-        width: 0;
-    }
-    25% {
-        height: 0;
-        width: 10px;
-    }
-    50% {
-        height: 20px;
-        width: 10px;
-    }
+[class^="closeicon-"],
+[class*=" closeicon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon-close' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-@-moz-keyframes check {
-    0% {
-        height: 0;
-        width: 0;
-    }
-    25% {
-        height: 0;
-        width: 10px;
-    }
-    50% {
-        height: 20px;
-        width: 10px;
+.closeicon-btn {
+    padding-top: 20px;
+    font-size: 24px;
+    float: right;
+    margin-right: 10px;
+    opacity: .8;
+    &:hover {
+      opacity: 1;
     }
 }
 
-@-ms-keyframes check {
-    0% {
-        height: 0;
-        width: 0;
-    }
-    25% {
-        height: 0;
-        width: 10px;
-    }
-    50% {
-        height: 20px;
-        width: 10px;
-    }
+.closeicon-btn:before {
+    content: "\e900";
 }
 
-@keyframes check {
-    0% {
-        height: 0;
-        width: 0;
-    }
-    25% {
-        height: 0;
-        width: 10px;
-    }
-    50% {
-        height: 20px;
-        width: 10px;
-    }
+@font-face {
+    font-family: 'icomoon-todo';
+    src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/icomoon-todo.eot?2lu2og');
+    src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/icomoon-todo.eot?2lu2og#iefix') format('embedded-opentype'), url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/icomoon-todo.ttf?2lu2og') format('truetype'), url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/icomoon-todo.woff?2lu2og') format('woff'), url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/94518/icomoon-todo.svg?2lu2og#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon-todo' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-cancel-circle:before {
+    content: "\e901";
 }
 
 body {
@@ -76,170 +70,275 @@ body {
     font-weight: 100%;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1,h2,h3,h4,h5,h6 {
     font-weight: 100;
 }
 
 .challenge-summary {
-    position: fixed;
-    height: 20%;
-    min-height: 200px;
-    width: 175px;
-    top: 40%;
-    background-color: #fff;
-    right: 0;
-    border-radius: 3px;
-    border: 2px solid #555;
+    display: inline-block;
+    width: 80%;
+    padding-bottom: 10px;
+    border-radius:10px;
     text-align: center;
-    @media @mobile {
-        position: relative !important;
-        display: inline-block;
-        width: 100%;
-        padding: 20px;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
+    background-color: #5E676B;
+    color: #fff;
+    margin-left: 10%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    h3 {
+        margin-bottom: 0;
     }
 }
-input[type=checkbox] {
-  display: none;
+.helper-txt {
+    font-family: 'Avenir Medium';
+    font-size: 12px;
+    opacity: .7;
+    margin: 15px;
+    color: #000;
+    margin-bottom: 10px;
 }
-/* 
-- Style each label that is directly after the input
-- position: relative; will ensure that any position: absolute children will position themselves in relation to it
-*/
-
-input[type=checkbox] + label {
-  position: relative;
-  // background-image: url(http://csscheckbox.com/checkboxes/u/csscheckbox_e54f06a318b764a2407a7abef25e4e5a.png);
-  height: 50px;
-  width: 50px;
-  display: block;
-  // border-radius: 50%;
-  transition: box-shadow 0.4s, border 0.4s;
-  border: solid 5px #FFF;
-  box-shadow: 0 0 1px #FFF;/* Soften the jagged edge */
-  cursor: pointer;
-}
-/* Provide a border when hovered and when the checkbox before it is checked */
-
-input[type=checkbox] + label:hover,
-input[type=checkbox]:checked + label {
-  border: solid 5px #1C7B8C;
-  box-shadow: 0 0 1px #1C7B8C;
-  /* Soften the jagged edge */
-}
-/* 
-- Create a pseudo element :after when checked and provide a tick
-- Center the content
-*/
-
-input[type=checkbox]:checked + label:after {
-  content: '\2714';
-  /*content is required, though it can be empty - content: '';*/
-  height: 1em;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  margin: auto;
-  color: #1C7B8C;
-  line-height: 1;
-  font-size: 18px;
-  text-align: center;
-}
-
-.exercise-selector {
-  display: inline-block;
-  margin-top: 10px;
-  width: 100%;
-}
-
-.frequency-text{
-  font-family: 'Avenir Light';
-    font-size: 23px;
-    line-height: 23px;
-}
-
-.event-trapper {
-  // float: left;
-  // display: inline-block;
-  margin: auto;
-  height: auto;
-  width: 50%;
-  padding: 40px;
-  min-width: 125px;
-  @media @mobile {
-    width: 200px;
-  }
+.challenge-summary span {
+    // font-family: 'Avenir Black';
+    text-align: center;
 }
 
 .radio-block {
-  display: inline-block;
-  position: relative;
-  width: 50%;
-  float: right;
-  margin-top: 15px;
-  padding-top: 45px;
-  padding-left: 40px;
-  @media @mobile {
-    float: none;
-    width: 100%;
-    padding-top: 15px;
-    padding-left: 10px;
-  }
+    display: inline-block;
+    width: 50%;
+    float: left;
 }
 
-.counter-select-text {
-  width: 50%;
-  float: left;
-  position: relative;
-  text-align: center;
-  font-size: 80px;
-  @media @mobile {
-    float: none;
-  }
+.exercise-block {
+    background-color: #fff;
+    position: relative;
+    display: inline-block;
+    margin: 10px auto;
+    padding: 5px;
+    border: 1px solid grey;
+    border-radius: 3px;
+    height: 175px;
+    width: 200px;
+    cursor: pointer;
+    transition: all 450ms ease;
+    overflow: hidden;
+    pointer-events: all;
+    &.completed {
+        opacity: 0;
+    }
+    &.hidden {
+        display: none;
+    }
+    &:hover {
+        border-width: 5px;
+        border-color: #298eea;
+    }
+    .title {
+        width: 100%;
+        height: 0;
+        color: #red;
+        text-align: center;
+    }
+    &.enabled {
+        overflow: hidden;
+        border-color: #298eea;
+        height: auto;
+        width: 100%;
+        @media only screen and (min-width: 320px) and (max-width: 568px) {
+            width: 250px;
+        }
+        &:hover {
+            border-width: 1px;
+        }
+        background-color: #298eea;
+        .header {
+            position: relative;
+            padding: 5px;
+            background-color: #298eea;
+            color: #fff;
+            text-align: center;
+            height: 75px;
+            font-size: 50px;
+            @media only screen and (min-width: 320px) and (max-width: 568px) {
+                height: 42px;
+                font-size: 20px;
+            }
+        }
+        .exercise-image-divider {
+            opacity: 1;
+        }
+        .exercise-img {
+            margin-top: 10px;
+            height: 150px;
+            width: auto;
+            pointer-events: none;
+        }
+        @media @mobile {
+            .exercise-img {
+                height: 100px;
+            }
+        }
+        .exercise-options {
+            width: 100%;
+            color: #fff;
+            position: relative;
+            margin: -30px auto 0;
+            display: block;
+            padding: 30px;
+        }
+    }
 }
-.exercise-example {
-  // display: inline-block;
-  float: left;
-  width: 100%;
-  max-width: 200px;
-  height: auto;
-}
-.selector-options {
 
-}
-.exercise-name {
-  h2 {
-    font-family: 'Avenir Black';
-    margin-top: 0;
-  }
-  width: 100%;
-  text-align: center;
-  display: inline;
-  float: left;
-  @media @mobile {
-    width: 100%;
-  }
+.header {
+    overflow: hidden;
+    height: 0;
+    transition: all 250ms ease;
+    color: #fff;
+    .icon-cancel-circle {
+        float: right;
+        font-size: 20px;
+        padding: 10px 5px;
+    }
 }
 
-.click-block {
-  // display: inline-block;
-  float: left;
-  width: 50%;
+.exercise-img {
+    height: 180px;
+    position: absolute;
+    width: auto;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
-.img-block {
-  // float: left;
+
+.exercise-options {
+    display: none;
 }
 
 .radio {
-  margin-bottom: 0 !important;
-  margin-top: 0 !important;
+    display: inline;
+}
+
+h3 {
+    text-align: center;
+    font-size: 36px;
+}
+
+.counter-buttons {
+    display: inline-block;
+    width: 125px;
+    margin: 10px auto 0;
+    left: 0;
+    right: 0;
+    position: relative;
+    text-align: center;
+}
+
+.augment-btn.btn {
+    width: 45%;
+    background-color: #298eea;
+    color: #fff;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    box-sizing: border-box;
+    border: 2px solid #fff;
+    &:hover, &:focus, &:active {
+        background-color: #fff;
+        color: #298eea;
+    }
+}
+
+.over-other-day-toggle {
+    display: none;
+}
+
+.exercise-image-divider {
+    opacity: 0;
+    margin-top: 0;
+    margin-bottom: 0 !important;
+    border-color: #298eea;
+    width: 150%;
+    margin-left: -15px;
+}
+
+.selector-top {
+    transition: all 2s ease;
+    width: 100%;
+    margin: 0 -5px;
+    display: inline-block;
+    height: 250px;
+    background-color: #fff;
+    @media only screen and (min-width: 320px) and (max-width: 568px) {
+        height: 175px;
+        width: 250px;
+    }
+}
+
+.white-text {
+    color: #fff;
+}
+
+.frequency-toggle {
+    width: 300px;
+    background-color: #fff;
+    display: inline-block;
+    margin: 10px -5px 0;
+    &:hover {
+        .frequency-cell.selected {
+            background-color: #298eea;
+            color: #fff;
+            &:hover {
+                color: #298eea;
+                background-color: #fff;
+            }
+        }
+    }
+    @media only screen and (min-width: 320px) and (max-width: 568px) {
+        width: 250px;
+        // background-color: #fff;
+        display: inline-block;
+        margin: 10px -10px 0;
+    }
+}
+
+.frequency-cell {
+    width: 50%;
+    font-size: 22px;
+    display: inline-block;
+    color: #fff;
+    background-color: #298eea;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 15px;
+    opacity: .7;
+    border: 1px solid #298eea;
+    &:nth-child(0){
+        border-right-color:#298eea; 
+        border-top-color:#fff; 
+    }
+    &:hover,
+    &.selected {
+        opacity: 1;
+        border: 1px solid #fff;
+        background-color: #fff;
+        color: #298eea;
+    }
+}
+
+.exercise-item-block {
+    text-align: center;
+    position: relative;
+    min-height: 1px;
+}
+
+.submit {
+    background-color: #28cb75;
+    color: #fff;
+    width: 80%;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 5% 10%;
+    border: 1px solid #41D888;
+    padding: 25px;
+    &:hover {
+        background-color: #0cb863;
+    }
 }

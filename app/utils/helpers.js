@@ -1,6 +1,7 @@
 // numeric start of today
 function today () {
     var now = new Date();
+    now.setTime(Date.now());
     var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     return today.getTime();
 }
@@ -21,7 +22,6 @@ export function formatChartData( data ) {
 
     d.setTime( opts.challengeStart );
 
-
     if (opts && opts.pushups.count && opts.pullups.count ) {
         if (opts.pushups.count >= opts.pullups.count){
             max = opts.pushups.count;
@@ -41,9 +41,10 @@ export function formatChartData( data ) {
     }
     // get dates for displaying on x axis
     for (let i = 0; i < (index + 1); i++) {
-        chartDates.push(d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate());
+        chartDates.push(d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate());
         d.setTime(d.getTime() + 86400000);
     }
+
     pushups.unshift("pushups");
     pullups.unshift("pullups");
     chartDates.unshift("x");
@@ -79,7 +80,7 @@ export default function userEntries( opts ) {
         }
     };
     let config = Object.assign(defaults, opts);
-
+    // console.log(config)
     for (let i = 0; i < 30; i++) {
         // fill array with zeros
         zeroArray.push(0);

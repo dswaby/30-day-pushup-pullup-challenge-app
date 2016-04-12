@@ -2,8 +2,8 @@ import React from 'react'
 import { Link, hashHistory } from 'react-router'
 import Rebase from 're-base'
 import Info from './Info'
-import ErrorCode from './Form/ErrorCode'
-import UserForm from './Form/UserForm'
+import ErrorCode from './Register/ErrorCode'
+import UserForm from './Register/UserForm'
 
 const base = Rebase.createClass('https://30day.firebaseio.com');
 

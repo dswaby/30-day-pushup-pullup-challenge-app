@@ -43,7 +43,7 @@ class ProgressSummary extends React.Component {
             },
             grid: {
                 y: {
-                    show: true
+                    show: false
                 }
             },
             tooltip: {
