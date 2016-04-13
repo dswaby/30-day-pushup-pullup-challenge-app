@@ -30,7 +30,6 @@ class ExerciseSelector extends React.Component {
         this.el = document.getElementById( this.elId );
         this.exerciseBlock = this.el.querySelector( ".exercise-block");
         this.closeToggle = this.el.querySelector(".icon-cancel-circle");
-        this.frequencyOptionEl = this.el.querySelector(".over-other-day-toggle");
     }
     getExercise( exerciseRef ) {
         if ( exerciseRef ) {
@@ -42,46 +41,23 @@ class ExerciseSelector extends React.Component {
         if ( frequencyRef && frequencyRef.checked ) {
             this.frequency = frequencyRef.value;
         }
-        // this.handleAddExercise();
     }
-    toggleFrequency ( freq ) {
-        if ( freq && freq !== this.state.frequency ) {
-            ( freq === "daily") 
-                ? this.frequencyOptionEl.classList.remove("visible")
-                : this.frequencyOptionEl.classList.add("visible");
-            this.setState({
-                frequency: freq
-            });
+    toggleFrequency ( e ) {
+        console.log(e)
+        if ( e.currentTarget.dataset.freq !== this.state.frequency ) {
+
+            this.setState({ frequency: e.currentTarget.dataset.freq });
         }
-        
     }
-    subtractTen( e ) {
-        e.preventDefault();
-        this.exerciseCount -= 10;
-        this.setState( { count: this.exerciseCount } );
-        // this.handleAddExercise();
-    }
-    addTen( e ) {
-        e.preventDefault();
-        this.exerciseCount += 10;
-        this.setState( { count: this.exerciseCount } );
-        // this.handleAddExercise();
-    }
-
     toggleEnabled( e ) {
-
-        // this.setState({ checked: e.target.checked })
         if ( this && this.enabled ) {
             this.exerciseBlock.classList.remove("enabled");
-            // this.setState({ checked: true })
             this.enabled = false;
-            // this.handleAddExercise();
         } 
         else if (this && !this.enabled)
         {
             this.exerciseBlock.classList.add("enabled");
             this.enabled = true;
-            // this.handleAddExercise();
         }
     }
     toggleStartDate( freq ){
@@ -90,6 +66,16 @@ class ExerciseSelector extends React.Component {
         } else {
             this.setState({ startDayOf: true })
         }
+    }
+    subtractTen( e ) {
+        e.preventDefault();
+        this.exerciseCount -= 10;
+        this.setState( { count: this.exerciseCount } );
+    }
+    addTen( e ) {
+        e.preventDefault();
+        this.exerciseCount += 10;
+        this.setState( { count: this.exerciseCount } );
     }
     removeExerciseBox(){
         this.exerciseBlock.classList.add("hidden");
@@ -139,25 +125,25 @@ class ExerciseSelector extends React.Component {
                         {this.enabled && this.state.frequency === "everyOtherDay" && <span> every other day</span>}
                         <span> for 30 days </span>
                     </h3>
-                  </div>
-                  <div className="frequency-toggle" >
-                        <div className="frequency-cell selected" onClick={ this.toggleFrequency( "daily" ) }>
+                    </div>
+                    <div id="frequency-toggle" className="frequency-toggle" >
+                        <div className="frequency-cell selected" data-freq="daily" onClick={ this.toggleFrequency }>
                             Daily
                         </div>
-                        <div className="frequency-cell">
+                        <div className="frequency-cell" data-freq="everyOtherDay" onClick={ this.toggleFrequency }>
                             Every Other Day
                         </div>
-                        <div className="over-other-day-toggle">
-                            <label htmlFor="checkboxG1">Starting Today</label>
-                            <input
-                                onChange={  this.toggleStartDate.bind( this )}
-                                name="checkboxG1" 
-                                className="css-checkbox" 
-                                type="checkbox"
-                                checked={ this.state.startDayOf }
-                            />
-                        </div>
                     </div>
+                    {this.state.frequency === "everyOtherDay" &&
+                        <div id="start-date-toggle" className="frequency-toggle">
+                            <div className="frequency-cell selected" onClick={ this.toggleFrequency }>
+                                Starting Today
+                            </div>
+                            <div className="frequency-cell" onClick={ this.toggleFrequency }>
+                                Starting Tommorrow
+                            </div>
+                        </div>
+                    }
                     <div className="submit" onClick={ this.handleAddExercise.bind( this ) }>
                         Add {this.props.exerciseName.toLowerCase()}
                     </div>
