@@ -28,6 +28,7 @@ class ExerciseSelector extends React.Component {
     }
     componentDidMount() {
         this.el = document.getElementById( this.elId );
+        this.freqCells = this.el.querySelectorAll(".frequency-cell");
         this.exerciseBlock = this.el.querySelector( ".exercise-block");
         this.closeToggle = this.el.querySelector(".icon-cancel-circle");
     }
@@ -43,9 +44,10 @@ class ExerciseSelector extends React.Component {
         }
     }
     toggleFrequency ( e ) {
-        console.log(e)
         if ( e.currentTarget.dataset.freq !== this.state.frequency ) {
-
+            // var cells = this.freqTog.querySelector(".frequency-cell");
+            this.freqCells[0].classList.toggle("selected");
+            this.freqCells[1].classList.toggle("selected");
             this.setState({ frequency: e.currentTarget.dataset.freq });
         }
     }
@@ -60,11 +62,18 @@ class ExerciseSelector extends React.Component {
             this.enabled = true;
         }
     }
-    toggleStartDate( freq ){
-        if ( this.state.startDayOf ) {
-            this.setState({ startDayOf: false })
-        } else {
-            this.setState({ startDayOf: true })
+    toggleStartDate( e ){
+        var cells = e.currentTarget.parentNode.querySelectorAll(".frequency-cell");
+
+        if ( this.state.startDayOf && e.currentTarget.dataset.startdate === "tommorrow" ) {
+            this.setState({ startDayOf: false });
+            cells[0].classList.toggle("selected");
+            cells[1].classList.toggle("selected");
+        }
+        else if ( !this.state.startDayOf && e.currentTarget.dataset.startdate === "today") {
+            this.setState({ startDayOf: true });
+            cells[0].classList.toggle("selected");
+            cells[1].classList.toggle("selected");
         }
     }
     subtractTen( e ) {
@@ -126,20 +135,20 @@ class ExerciseSelector extends React.Component {
                         <span> for 30 days </span>
                     </h3>
                     </div>
-                    <div id="frequency-toggle" className="frequency-toggle" >
-                        <div className="frequency-cell selected" data-freq="daily" onClick={ this.toggleFrequency }>
+                    <div id="frequency-toggle" className="frequency-toggle"  >
+                        <div className="frequency-cell selected" data-freq="daily" onClick={ this.toggleFrequency.bind( this ) }>
                             Daily
                         </div>
-                        <div className="frequency-cell" data-freq="everyOtherDay" onClick={ this.toggleFrequency }>
+                        <div className="frequency-cell" data-freq="everyOtherDay" onClick={ this.toggleFrequency.bind( this ) }>
                             Every Other Day
                         </div>
                     </div>
                     {this.state.frequency === "everyOtherDay" &&
                         <div id="start-date-toggle" className="frequency-toggle">
-                            <div className="frequency-cell selected" onClick={ this.toggleFrequency }>
+                            <div className="frequency-cell selected" data-startdate="today" onClick={ this.toggleStartDate.bind( this ) }>
                                 Starting Today
                             </div>
-                            <div className="frequency-cell" onClick={ this.toggleFrequency }>
+                            <div className="frequency-cell" data-startdate="tommorrow" onClick={ this.toggleStartDate.bind( this ) }>
                                 Starting Tommorrow
                             </div>
                         </div>
